@@ -22,14 +22,8 @@ public class CompanyController {
     private CompanyService companyService;
 
     @GetMapping
-    public ResponseEntity<Page<Company>> findAll(@PageableDefault(page = 5) Pageable pageable, @RequestParam("search") Optional<String> name) {
-        Page<Company> companies;
-        if (name.isPresent()) {
-            companies = companyService.findAll(name.get(), pageable);
-        } else {
-            companies = companyService.findAll("", pageable);
-        }
-        return new ResponseEntity<> (companies, HttpStatus.OK);
+    public ResponseEntity<Page<Company>> findAll(@PageableDefault(page = 5) Pageable pageable) {
+        return new ResponseEntity<> (companyService.findAll(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
