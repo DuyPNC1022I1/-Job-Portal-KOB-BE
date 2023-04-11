@@ -22,4 +22,5 @@ public class Account {
     private String email;
     private String password;
     private Boolean status;
+    private String roles;
 }
