@@ -13,7 +13,7 @@ public class ICoreServiceJob implements ICoreService<Job> {
     @Autowired
     private JobRepository jobRepository;
     @Override
-    public Page<Job> findAll(String name, Pageable pageable) {
+    public Page<Job> findAll(Pageable pageable) {
         return jobRepository.findAll(pageable);
     }
 

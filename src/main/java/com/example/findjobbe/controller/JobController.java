@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.List;
 
 @RestController
 @CrossOrigin("*")
@@ -20,14 +20,8 @@ public class JobController {
     private JobService jobService;
 
     @GetMapping
-    public ResponseEntity<Page<Job>> findAll(@PageableDefault(page = 5) Pageable pageable, @RequestParam("search") Optional<String> name) {
-        Page<Job> jobs;
-        if (name.isPresent()) {
-            jobs = jobService.findAll(name.get(), pageable);
-        } else {
-            jobs = jobService.findAll("", pageable);
-        }
-        return new ResponseEntity<> (jobs, HttpStatus.OK);
+    public ResponseEntity<Page<Job>> findAll(@PageableDefault(page = 5) Pageable pageable) {
+        return new ResponseEntity<> (jobService.findAll(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -45,6 +39,11 @@ public class JobController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         jobService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/findByCompany/{id}")
+    public ResponseEntity<List<Job>> findAllByCompany(Long id) {
+        return new ResponseEntity<>(jobService.findAllByCompany(id), HttpStatus.OK);
     }
 
 }
