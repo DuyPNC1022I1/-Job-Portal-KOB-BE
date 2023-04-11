@@ -23,6 +23,7 @@ public class Company {
     private String name;
     private String phoneNumber;
     private Long totalEmployee;//số lượng nv
+    private String address;
     @ManyToOne
     private City city;
 }
