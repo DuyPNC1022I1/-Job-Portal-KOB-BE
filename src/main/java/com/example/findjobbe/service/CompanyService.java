@@ -2,12 +2,13 @@ package com.example.findjobbe.service;
 
 import com.example.findjobbe.model.Account;
 import com.example.findjobbe.model.Company;
-import com.example.findjobbe.model.User;
 import com.example.findjobbe.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CompanyService implements ICoreService<Company>{
@@ -18,7 +19,7 @@ public class CompanyService implements ICoreService<Company>{
     }
     @Override
     public Page<Company> findAll(Pageable pageable) {
-        return null;
+        return companyRepository.findAll(pageable);
     }
 
     @Override
@@ -31,10 +32,10 @@ public class CompanyService implements ICoreService<Company>{
         companyRepository.save(company);
 
     }
-
     @Override
     public void delete(Long id) {
         companyRepository.deleteById(id);
 
     }
+
 }

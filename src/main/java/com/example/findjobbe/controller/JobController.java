@@ -19,20 +19,28 @@ public class JobController {
     @Autowired
     private JobService jobService;
 
+//    @GetMapping
+//    public ResponseEntity<Page<Job>> findAll(@PageableDefault(page = 5) Pageable pageable) {
+//        return new ResponseEntity<> (jobService.findAll(pageable), HttpStatus.OK);
+//    }
     @GetMapping
-    public ResponseEntity<Page<Job>> findAll(@PageableDefault(page = 5) Pageable pageable) {
-        return new ResponseEntity<> (jobService.findAll(pageable), HttpStatus.OK);
+    public ResponseEntity<List<Job>> findAllTest() {
+        return new ResponseEntity<> (jobService.findAllTest(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Job> findOne(@PathVariable Long id) {
-        return new ResponseEntity<>(jobService.findOne(id), HttpStatus.OK);
+        if (jobService.findOne(id) == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(jobService.findOne(id), HttpStatus.OK);
+        }
     }
 
     @PostMapping
     public ResponseEntity<Void> save(@RequestBody Job job) {
         jobService.save(job);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
@@ -42,7 +50,7 @@ public class JobController {
     }
 
     @GetMapping("/findByCompany/{id}")
-    public ResponseEntity<List<Job>> findAllByCompany(Long id) {
+    public ResponseEntity<List<Job>> findAllByCompany(@PathVariable Long id) {
         return new ResponseEntity<>(jobService.findAllByCompany(id), HttpStatus.OK);
     }
 

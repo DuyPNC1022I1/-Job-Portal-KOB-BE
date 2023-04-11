@@ -11,6 +11,9 @@ import java.util.List;
 public class JobService extends ICoreServiceJob{
     @Autowired
     private JobRepository jobRepository;
+    public List<Job> findAllTest() {
+        return jobRepository.findAll();
+    }
     public List<Job> findAllByCompany(Long companyId) {
         return jobRepository.findAllByCompany_Id(companyId);
     }
