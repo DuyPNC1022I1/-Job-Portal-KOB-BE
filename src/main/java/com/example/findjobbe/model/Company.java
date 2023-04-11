@@ -26,4 +26,5 @@ public class Company {
     private String address;
     @ManyToOne
     private City city;
+    private String description;
 }
