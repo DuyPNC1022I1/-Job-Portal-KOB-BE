@@ -17,7 +17,7 @@ public class CompanyService implements ICoreService<Company>{
         return companyRepository.findCompanyByAccount(account);
     }
     @Override
-    public Page<Company> findAll(String name, Pageable pageable) {
+    public Page<Company> findAll(Pageable pageable) {
         return null;
     }
 

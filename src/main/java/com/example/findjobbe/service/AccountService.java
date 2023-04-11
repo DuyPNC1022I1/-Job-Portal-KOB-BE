@@ -2,6 +2,8 @@ package com.example.findjobbe.service;
 
 
 import com.example.findjobbe.model.Account;
+import com.example.findjobbe.model.Company;
+import com.example.findjobbe.model.User;
 import com.example.findjobbe.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,10 +18,15 @@ public class AccountService implements ICoreService<Account> {
     JavaMailSender javaMailSender;
     @Autowired
     AccountRepository accountRepository;
+    @Autowired
+    UserService userService;
+    @Autowired
+    CompanyService companyService;
     public Boolean activeAccount(String email){
         Account account = accountRepository.findByEmail(email);
         if (account!=null){
             account.setStatus(true);
+            accountRepository.save(account);
             return true;
         }
         return false;
@@ -34,13 +41,38 @@ public class AccountService implements ICoreService<Account> {
     public Account findAccountByEmail(String email){
         return accountRepository.findByEmail(email);
     }
+    public Boolean register(Account account) {
+        String email = account.getEmail();
+        String link = "http://localhost:8080/auth/active/" + email;
+        String subject = "Active account from KOB find job";
+        String text = "Hello, " + email
+                     + "\n Please confirm this link to active your account: "+link;
+        if (findAccountByEmail(email) == null) {
+            account.setStatus(false);
+            save(account);
+            Account accountAdd = findAccountByEmail(email);
+            if (account.getRoles().equals("user")) {
+                User user = new User();
+                user.setAccount(accountAdd);
+                userService.save(user);
+
+            } else {
+                Company company = new Company();
+                company.setAccount(accountAdd);
+                companyService.save(company);
+            }
+            sendMail(email,subject,text);
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public void save(Account account) {
             accountRepository.save(account);
     }
     @Override
-    public Page<Account> findAll(String name, Pageable pageable) {
+    public Page<Account> findAll(Pageable pageable) {
         return null;
     }
 

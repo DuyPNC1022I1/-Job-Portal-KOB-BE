@@ -16,7 +16,7 @@ public class UserService implements ICoreService<User>{
         return userRepository.findUserByAccount(account);
     }
     @Override
-    public Page<User> findAll(String name, Pageable pageable) {
+    public Page<User> findAll(Pageable pageable) {
         return null;
     }
 
