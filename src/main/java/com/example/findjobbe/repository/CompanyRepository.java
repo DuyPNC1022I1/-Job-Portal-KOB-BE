@@ -1,6 +1,7 @@
 package com.example.findjobbe.repository;
 
-import com.example.findjobkob.model.Company;
+
+import com.example.findjobbe.model.Company;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
