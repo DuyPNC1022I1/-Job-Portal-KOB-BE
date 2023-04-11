@@ -25,4 +25,5 @@ public class Company {
     private Long totalEmployee;//số lượng nv
     @ManyToOne
     private City city;
+    private String address;
 }

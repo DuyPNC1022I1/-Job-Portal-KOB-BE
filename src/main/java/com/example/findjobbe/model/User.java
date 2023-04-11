@@ -22,5 +22,6 @@ public class User {
     private String name;
     private String phoneNumber;
     private String cvPath;//link cv ứng viên
+    private String address;
 
 }
