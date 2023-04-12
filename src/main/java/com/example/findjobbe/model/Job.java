@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -23,8 +24,8 @@ public class Job {
     private Long quantity; // Số lượng cần tuyển
     private Double salaryMax;
     private Double salaryMin;
-    private Date startDate;//ngày đăng tuyển
-    private Boolean status;
+    private LocalDate startDate;//ngày đăng tuyển
+    private Boolean status; //sử dụng để block bài đăng tuyển
     private String typeTime; //partTime or fullTime
     @ManyToOne
     private Career career;//ngành nghề, lĩnh vực
