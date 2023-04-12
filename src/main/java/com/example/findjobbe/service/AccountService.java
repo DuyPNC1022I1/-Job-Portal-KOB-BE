@@ -49,7 +49,7 @@ public class AccountService implements ICoreService<Account> {
         String subject = "Active account from KOB find job";
         String text = "Hello, " + account.getName()
                      + "\n Please confirm this link to active your account: "+link;
-        if (findAccountByEmail(email) == null) {
+        if (findAccountByEmail(email) == null && account.getRoles()!=null) {
             account.setStatus(false);
             save(account);
             Account accountAdd = findAccountByEmail(email);

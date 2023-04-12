@@ -1,8 +1,6 @@
 package com.example.findjobbe.controller;
 
 import com.example.findjobbe.model.Account;
-import com.example.findjobbe.model.Company;
-import com.example.findjobbe.model.User;
 import com.example.findjobbe.service.AccountService;
 import com.example.findjobbe.service.CompanyService;
 import com.example.findjobbe.service.UserService;
