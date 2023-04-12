@@ -37,14 +37,34 @@ public class AuthController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
    @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestParam("email")String email,
-                                      @RequestParam("password") String password){
-        Account account = accountService.findAccountByEmail(email);
-        if (account.getPassword().equals(password)){
-
+    public ResponseEntity<Object> login(@RequestBody Account account){
+        String email = account.getEmail();
+        Account accountFind = accountService.findAccountByEmail(email);
+        if (account.getPassword().equals(accountFind.getPassword())){
+            if (accountFind.getRoles().equals("company")){
+                return new ResponseEntity<>(companyService.findCompanyByAccount(accountFind),HttpStatus.OK);
+            }
+            else{
+              return new ResponseEntity<>(userService.findUserByAccount(accountFind),HttpStatus.OK);
+            }
         }
-
-        return null;
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
   }
+  @PostMapping("/forget-password/{email}")
+    public ResponseEntity<Void> forgetPassword(@PathVariable String email){
+        Account account = accountService.findAccountByEmail(email);
+        if (account.getStatus()){
+            String to = account.getEmail();
+            String subject = "Reset password from KOB find job";
+            String code = accountService.generateRandomCode();
+            String text = "Hello, "+account.getEmail()+"\n Your password has been reset to " +code+", please change it. Thank you";
+            account.setPassword(code);
+            accountService.save(account);
+            accountService.sendMail(to,subject,text);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+  }
+
 
 }
