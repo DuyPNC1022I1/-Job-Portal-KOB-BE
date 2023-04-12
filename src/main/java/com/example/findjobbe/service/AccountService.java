@@ -47,7 +47,7 @@ public class AccountService implements ICoreService<Account> {
         String email = account.getEmail();
         String link = "http://localhost:8080/auth/active/" + email;
         String subject = "Active account from KOB find job";
-        String text = "Hello, " + email
+        String text = "Hello, " + account.getName()
                      + "\n Please confirm this link to active your account: "+link;
         if (findAccountByEmail(email) == null) {
             account.setStatus(false);

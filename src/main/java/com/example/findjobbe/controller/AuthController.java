@@ -38,9 +38,10 @@ public class AuthController {
     }
    @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody Account account){
+
         String email = account.getEmail();
         Account accountFind = accountService.findAccountByEmail(email);
-        if (account.getPassword().equals(accountFind.getPassword())){
+        if (account.getPassword().equals(accountFind.getPassword()) && accountFind.getStatus()){
             if (accountFind.getRoles().equals("company")){
                 return new ResponseEntity<>(companyService.findCompanyByAccount(accountFind),HttpStatus.OK);
             }
@@ -57,7 +58,7 @@ public class AuthController {
             String to = account.getEmail();
             String subject = "Reset password from KOB find job";
             String code = accountService.generateRandomCode();
-            String text = "Hello, "+account.getEmail()+"\n Your password has been reset to " +code+", please change it. Thank you";
+            String text = "Hello, "+account.getName()+"\n Your password has been reset to " +code+", please change it. Thank you";
             account.setPassword(code);
             accountService.save(account);
             accountService.sendMail(to,subject,text);
