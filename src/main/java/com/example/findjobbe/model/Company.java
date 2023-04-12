@@ -20,7 +20,6 @@ public class Company {
     private Account account;
     private String googleMapLink;
     private String imagePath;
-    private String name;
     private String phoneNumber;
     private Long totalEmployee;//số lượng nv
     private String address;
