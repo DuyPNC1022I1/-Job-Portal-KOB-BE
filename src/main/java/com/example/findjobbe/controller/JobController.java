@@ -61,25 +61,24 @@ public class JobController {
         return new ResponseEntity<>(jobService.findAllByCompany(id), HttpStatus.OK);
     }
 
-    //Block Job
+    //Block or Unlock Job by Company id
     @GetMapping("/blockOrUnlockJob/{id}")
-    public ResponseEntity<List<Job>> blockOrUnlockJob(@PathVariable Long id) {
-        Job jobBlock = jobService.findOne(id);
-        if (jobBlock.getStatus()) {
-            jobBlock.setStatus(false); //block job
+    public ResponseEntity<List<Job>> blockUnlockByCompany(@PathVariable Long id) {
+        Long idCompany = 0L;
+        Job jobBlocks = jobService.findOne(id);
+        if (jobBlocks.getStatus()) {
+            jobBlocks.setStatus(false); //block job
         } else {
-            jobBlock.setStatus(true); //unlock job
+            jobBlocks.setStatus(true); //unlock job
         }
-        jobService.save(jobBlock);
-        return new ResponseEntity<>(jobService.findAllTest(), HttpStatus.OK);
-    }
-
-    //Unlock job
-    @GetMapping("/unlockJob/{id}")
-    public ResponseEntity<List<Job>> unlockJob(@PathVariable Long id) {
-        Job jobUnlock = jobService.findOne(id);
-        jobUnlock.setStatus(true);
-        jobService.save(jobUnlock);
-        return new ResponseEntity<>(jobService.findAllTest(), HttpStatus.OK);
+        jobService.save(jobBlocks);
+        //
+        List<Job> jobs = jobService.findAllTest();
+        for (int i = 0; i < jobs.size(); i++) {
+            if (jobs.get(i).getId() == id) {
+                idCompany = jobs.get(i).getCompany().getId();
+            }
+        }
+        return new ResponseEntity<>(jobService.findAllByCompany(idCompany), HttpStatus.OK);
     }
 }

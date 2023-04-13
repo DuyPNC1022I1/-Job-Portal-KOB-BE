@@ -21,7 +21,7 @@ public class Company {
     private String googleMapLink;
     private String imagePath;
     private String phoneNumber;
-    private Long totalEmployee;//số lượng nv
+    private Long totalEmployee;
     private String address;
     @ManyToOne
     private City city;
