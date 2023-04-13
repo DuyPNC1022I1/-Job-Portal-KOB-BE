@@ -1,8 +1,6 @@
 package com.example.findjobbe.controller;
 
 import com.example.findjobbe.model.Account;
-import com.example.findjobbe.model.Company;
-import com.example.findjobbe.model.User;
 import com.example.findjobbe.service.AccountService;
 import com.example.findjobbe.service.CompanyService;
 import com.example.findjobbe.service.UserService;
@@ -10,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 @CrossOrigin("*")
@@ -30,21 +29,42 @@ public class AuthController {
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
     @GetMapping("/active/{email}")
-    public ResponseEntity<Void> active(@PathVariable String email){
+    public RedirectView active(@PathVariable String email){
         if (accountService.activeAccount(email)){
+            return new RedirectView("http://localhost:3000");
+        }
+        return new RedirectView("http://localhost:3000/404");
+    }
+   @PostMapping("/login")
+    public ResponseEntity<Object> login(@RequestBody Account account){
+
+        String email = account.getEmail();
+        Account accountFind = accountService.findAccountByEmail(email);
+        if (account.getPassword().equals(accountFind.getPassword()) && accountFind.getStatus()){
+            if (accountFind.getRoles().equals("company")){
+                return new ResponseEntity<>(companyService.findCompanyByAccount(accountFind),HttpStatus.OK);
+            }
+            else{
+              return new ResponseEntity<>(userService.findUserByAccount(accountFind),HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+  }
+  @PostMapping("/forget-password")
+    public ResponseEntity<Void> forgetPassword(@RequestParam("email") String email){
+        Account account = accountService.findAccountByEmail(email);
+        if (account.getStatus()){
+            String to = account.getEmail();
+            String subject = "Reset password from KOB find job";
+            String code = accountService.generateRandomCode();
+            String text = "Hello, "+account.getName()+"\n Your password has been reset to " +code+", please change it. Thank you";
+            account.setPassword(code);
+            accountService.save(account);
+            accountService.sendMail(to,subject,text);
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
-   @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestParam("email")String email,
-                                      @RequestParam("password") String password){
-        Account account = accountService.findAccountByEmail(email);
-        if (account.getPassword().equals(password)){
-
-        }
-
-        return null;
   }
+
 
 }

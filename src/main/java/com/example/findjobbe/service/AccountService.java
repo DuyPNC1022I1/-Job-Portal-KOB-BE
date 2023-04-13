@@ -12,7 +12,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Random;
 
 @Service
 public class AccountService implements ICoreService<Account> {
@@ -47,9 +47,9 @@ public class AccountService implements ICoreService<Account> {
         String email = account.getEmail();
         String link = "http://localhost:8080/auth/active/" + email;
         String subject = "Active account from KOB find job";
-        String text = "Hello, " + email
+        String text = "Hello, " + account.getName()
                      + "\n Please confirm this link to active your account: "+link;
-        if (findAccountByEmail(email) == null) {
+        if (findAccountByEmail(email) == null && account.getRoles()!=null) {
             account.setStatus(false);
             save(account);
             Account accountAdd = findAccountByEmail(email);
@@ -68,6 +68,20 @@ public class AccountService implements ICoreService<Account> {
         }
         return false;
     }
+
+    public String generateRandomCode() {
+        int length = 8;
+        String characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(characters.length());
+            sb.append(characters.charAt(index));
+        }
+
+        return sb.toString();
+    }
+
 
     @Override
     public void save(Account account) {
@@ -89,5 +103,4 @@ public class AccountService implements ICoreService<Account> {
         accountRepository.deleteById(id);
 
     }
-
 }
