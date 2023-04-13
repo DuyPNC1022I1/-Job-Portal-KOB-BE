@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 @CrossOrigin("*")
@@ -28,11 +29,11 @@ public class AuthController {
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
     @GetMapping("/active/{email}")
-    public ResponseEntity<Void> active(@PathVariable String email){
+    public RedirectView active(@PathVariable String email){
         if (accountService.activeAccount(email)){
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new RedirectView("http://localhost:3000");
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new RedirectView("http://localhost:3000/404");
     }
    @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody Account account){
