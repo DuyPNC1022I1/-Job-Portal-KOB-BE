@@ -50,8 +50,8 @@ public class AuthController {
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
   }
-  @PostMapping("/forget-password/{email}")
-    public ResponseEntity<Void> forgetPassword(@PathVariable String email){
+  @PostMapping("/forget-password")
+    public ResponseEntity<Void> forgetPassword(@RequestParam("email") String email){
         Account account = accountService.findAccountByEmail(email);
         if (account.getStatus()){
             String to = account.getEmail();
