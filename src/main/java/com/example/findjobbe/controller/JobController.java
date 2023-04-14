@@ -82,4 +82,35 @@ public class JobController {
         jobService.save(jobUnlock);
         return new ResponseEntity<>(jobService.findAllTest(), HttpStatus.OK);
     }
+    @GetMapping("find-by-name")
+    public ResponseEntity<List<Job>> findAllByJobName(@RequestParam("name")String name){
+        if (!name.equals("")){
+            return new ResponseEntity<>(jobService.findAllByJobName(name),HttpStatus.OK);
+        }
+            return new ResponseEntity<>(jobService.findAllTest(),HttpStatus.OK);
+    }
+    @GetMapping("find-by-address")
+    public ResponseEntity<List<Job>> findAllByAddress(@RequestParam("address")String address){
+        if (!address.equals("")){
+            return new ResponseEntity<>(jobService.findALlByCompanyAddress(address),HttpStatus.OK);
+        }
+        return new ResponseEntity<>(jobService.findAllTest(),HttpStatus.OK);
+    }
+    @GetMapping("find-by-career/{id}")
+    public ResponseEntity<List<Job>> findAllByCareer(@PathVariable Long id){
+            return new ResponseEntity<>(jobService.findAllByCareer(id),HttpStatus.OK);
+    }
+    @GetMapping("find-by-city/{id}")
+    public ResponseEntity<List<Job>> findAllByCity(@PathVariable Long id){
+        return new ResponseEntity<>(jobService.findAllByCity(id),HttpStatus.OK);
+    }
+    @GetMapping("find-by-employeeType/{id}")
+    public ResponseEntity<List<Job>> findAllByEmployeeType(@PathVariable Long id){
+        return new ResponseEntity<>(jobService.findALlByEmployeeType(id),HttpStatus.OK);
+    }
+    @GetMapping("find-by-salary/{min}/{max}")
+    public ResponseEntity<List<Job>> findAllBySalary(@PathVariable("min") Double min,@PathVariable("max") Double max){
+        return new ResponseEntity<>(jobService.findBySalary(min,max),HttpStatus.OK);
+    }
+
 }
