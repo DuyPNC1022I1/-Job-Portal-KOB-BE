@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -74,11 +73,12 @@ public class JobController {
         jobService.save(jobBlocks);
         //
         List<Job> jobs = jobService.findAllTest();
-        for (int i = 0; i < jobs.size(); i++) {
-            if (jobs.get(i).getId() == id) {
-                idCompany = jobs.get(i).getCompany().getId();
+        for (Job job : jobs) {
+            if (job.getId() == id) {
+                idCompany = job.getCompany().getId();
             }
         }
         return new ResponseEntity<>(jobService.findAllByCompany(idCompany), HttpStatus.OK);
     }
+
 }
