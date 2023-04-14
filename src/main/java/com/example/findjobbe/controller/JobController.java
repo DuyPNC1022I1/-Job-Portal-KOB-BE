@@ -74,9 +74,9 @@ public class JobController {
         jobService.save(jobBlocks);
         //
         List<Job> jobs = jobService.findAllTest();
-        for (int i = 0; i < jobs.size(); i++) {
-            if (jobs.get(i).getId() == id) {
-                idCompany = jobs.get(i).getCompany().getId();
+        for (Job job : jobs) {
+            if (job.getId() == id) {
+                idCompany = job.getCompany().getId();
             }
         }
         return new ResponseEntity<>(jobService.findAllByCompany(idCompany), HttpStatus.OK);
