@@ -50,14 +50,18 @@ public class JobController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PutMapping
-    public ResponseEntity<Void> update(@RequestBody Job job) {
-        try {
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> update(@RequestBody Job job, @PathVariable Long id) {
+        job.setStartDate(java.time.LocalDate.now());
+        Job jobUpdate = jobService.findOne(id);
+        if(jobUpdate != null) {
             jobService.save(job);
-        } catch (Exception e) {
-            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.CREATED);
         }
-        return new ResponseEntity<>(HttpStatus.OK);
+        else {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
     }
 
     @DeleteMapping("/{id}")
@@ -92,4 +96,44 @@ public class JobController {
         }
         return new ResponseEntity<>(jobService.findAllByCompany(idCompany), HttpStatus.OK);
     }
+
+    @GetMapping("/findByKeyWord/{key}")
+    public ResponseEntity<List<Job>> findByKeyWord(@PathVariable String key) {
+        List<Job> jobs = jobService.findAllTest();
+        List<Job> jobsByKeyWord = new ArrayList<>();
+        for (int i = 0; i < jobs.size(); i++) {
+            if(jobs.get(i).getCompany().getAccount().getName().toUpperCase().contains(key.toUpperCase())) {
+                jobsByKeyWord.add(jobs.get(i));
+            }
+            else if (jobs.get(i).getGender().equalsIgnoreCase(key)) {
+                jobsByKeyWord.add(jobs.get(i));
+            }
+//            else if (jobs.get(i).getCity().getName().contains(key.toUpperCase())) {
+//                jobsByKeyWord.add(jobs.get(i));
+//            }
+            else if (jobs.get(i).getCareer().getName().toUpperCase().contains(key.toUpperCase())) {
+                jobsByKeyWord.add(jobs.get(i));
+            } else {
+                System.out.println("no content!");
+            }
+        }
+        if (jobsByKeyWord.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(jobsByKeyWord, HttpStatus.OK);
+        }
+    }
+
+    @GetMapping("/findByCity/{city}")
+    public ResponseEntity<List<Job>> findByCity(@PathVariable String cityName) {
+        List<Job> jobs = jobService.findAllTest();
+        List<Job> jobsByCity = new ArrayList<>();
+        for (int i = 0; i < jobs.size(); i++) {
+            if (jobs.get(i).getCity().getName().contains(cityName.toUpperCase())) {
+                jobsByCity.add(jobs.get(i));
+            }
+        }
+        return new ResponseEntity<>(jobsByCity,HttpStatus.OK);
+    }
+
 }
