@@ -21,13 +21,13 @@ public class JobController {
     @Autowired
     private JobService jobService;
 
-//    @GetMapping
+    //    @GetMapping
 //    public ResponseEntity<Page<Job>> findAll(@PageableDefault(page = 5) Pageable pageable) {
 //        return new ResponseEntity<> (jobService.findAll(pageable), HttpStatus.OK);
 //    }
     @GetMapping
     public ResponseEntity<List<Job>> findAllTest() {
-        return new ResponseEntity<> (jobService.findAllTest(), HttpStatus.OK);
+        return new ResponseEntity<>(jobService.findAllTest(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -54,11 +54,10 @@ public class JobController {
     public ResponseEntity<Void> update(@RequestBody Job job, @PathVariable Long id) {
         job.setStartDate(java.time.LocalDate.now());
         Job jobUpdate = jobService.findOne(id);
-        if(jobUpdate != null) {
+        if (jobUpdate != null) {
             jobService.save(job);
             return new ResponseEntity<>(HttpStatus.CREATED);
-        }
-        else {
+        } else {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
@@ -76,36 +75,28 @@ public class JobController {
         return new ResponseEntity<>(jobService.findAllByCompany(id), HttpStatus.OK);
     }
 
-    //Block or Unlock Job by Company id
+    //Block Job
     @GetMapping("/blockOrUnlockJob/{id}")
-    public ResponseEntity<List<Job>> blockUnlockByCompany(@PathVariable Long id) {
-        Long idCompany = 0L;
-        Job jobBlocks = jobService.findOne(id);
-        if (jobBlocks.getStatus()) {
-            jobBlocks.setStatus(false); //block job
+    public ResponseEntity<List<Job>> blockOrUnlockJob(@PathVariable Long id) {
+        Job jobBlock = jobService.findOne(id);
+        if (jobBlock.getStatus()) {
+            jobBlock.setStatus(false); //block job
         } else {
-            jobBlocks.setStatus(true); //unlock job
+            jobBlock.setStatus(true); //unlock job
         }
-        jobService.save(jobBlocks);
-        //
-        List<Job> jobs = jobService.findAllTest();
-        for (Job job : jobs) {
-            if (job.getId() == id) {
-                idCompany = job.getCompany().getId();
-            }
-        }
-        return new ResponseEntity<>(jobService.findAllByCompany(idCompany), HttpStatus.OK);
+        jobService.save(jobBlock);
+        return new ResponseEntity<>(jobService.findAllTest(), HttpStatus.OK);
     }
+
 
     @GetMapping("/findByKeyWord/{key}")
     public ResponseEntity<List<Job>> findByKeyWord(@PathVariable String key) {
         List<Job> jobs = jobService.findAllTest();
         List<Job> jobsByKeyWord = new ArrayList<>();
         for (int i = 0; i < jobs.size(); i++) {
-            if(jobs.get(i).getCompany().getAccount().getName().toUpperCase().contains(key.toUpperCase())) {
+            if (jobs.get(i).getCompany().getAccount().getName().toUpperCase().contains(key.toUpperCase())) {
                 jobsByKeyWord.add(jobs.get(i));
-            }
-            else if (jobs.get(i).getGender().equalsIgnoreCase(key)) {
+            } else if (jobs.get(i).getGender().equalsIgnoreCase(key)) {
                 jobsByKeyWord.add(jobs.get(i));
             }
 //            else if (jobs.get(i).getCity().getName().contains(key.toUpperCase())) {
@@ -133,7 +124,7 @@ public class JobController {
                 jobsByCity.add(jobs.get(i));
             }
         }
-        return new ResponseEntity<>(jobsByCity,HttpStatus.OK);
-    }
+        return new ResponseEntity<>(jobsByCity, HttpStatus.OK);
+        }
 
-}
+    }
