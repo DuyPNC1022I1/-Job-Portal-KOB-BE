@@ -38,5 +38,5 @@ public interface JobRepository extends JpaRepository<Job,Long> {
     List<Job> findAllByTypeTime(String typeTime);
     List<Job> findAllByGender(String gender);
 
-    
+
 }
