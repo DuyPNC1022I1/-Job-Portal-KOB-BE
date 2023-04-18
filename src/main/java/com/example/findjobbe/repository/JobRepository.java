@@ -21,10 +21,10 @@ public interface JobRepository extends JpaRepository<Job,Long> {
     List<Job> findAllJobByCompanyAddress(@Param("address") String address);
     List<Job> findAllByCompany_City_Id(Long id);
     List<Job> findAllByEmployeeType_Id(Long id);
+
     List<Job> findAllByExpiration(Long expiration);
     List<Job> findAllByTypeTime(String typeTime);
     List<Job> findAllByGender(String gender);
-
 
 
 }
