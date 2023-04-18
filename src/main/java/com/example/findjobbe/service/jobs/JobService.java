@@ -135,9 +135,11 @@ public class JobService extends ICoreServiceJob{
                 if ((jobs.get(i).getCompany().getAccount().getName().toUpperCase().contains(key1.toUpperCase()))
                         && (jobs.get(i).getCity().getName().equals(key2))){
                     jobsByKeyWord.add(jobs.get(i));
-                } else if ((jobs.get(i).getGender().toUpperCase().contains(key1.toUpperCase()) && (jobs.get(i).getCity().getName().equals(key2)))) {
+                } else if ((jobs.get(i).getGender().toUpperCase().contains(key1.toUpperCase())
+                        && (jobs.get(i).getCity().getName().equals(key2)))) {
                     jobsByKeyWord.add(jobs.get(i));
-                } else if ((jobs.get(i).getCareer().getName().toUpperCase().contains(key1.toUpperCase()) && (jobs.get(i).getCity().getName().equals(key2)))) {
+                } else if ((jobs.get(i).getCareer().getName().toUpperCase().contains(key1.toUpperCase())
+                        && (jobs.get(i).getCity().getName().equals(key2)))) {
                     jobsByKeyWord.add(jobs.get(i));
                 } else {
                     System.out.println("no content!");
