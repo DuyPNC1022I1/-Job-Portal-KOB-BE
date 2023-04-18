@@ -147,6 +147,4 @@ public class JobController {
             return new ResponseEntity<>(jobs, HttpStatus.OK);
         }
     }
-
-
 }
