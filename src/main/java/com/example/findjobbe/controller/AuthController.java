@@ -40,13 +40,16 @@ public class AuthController {
 
         String email = account.getEmail();
         Account accountFind = accountService.findAccountByEmail(email);
-        if (account.getPassword().equals(accountFind.getPassword()) && accountFind.getStatus()){
+        if (accountFind.getStatus()){
+        if (account.getPassword().equals(accountFind.getPassword())){
             if (accountFind.getRoles().equals("company")){
                 return new ResponseEntity<>(companyService.findCompanyByAccount(accountFind),HttpStatus.OK);
             }
             else{
               return new ResponseEntity<>(userService.findUserByAccount(accountFind),HttpStatus.OK);
             }
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
   }
@@ -64,6 +67,10 @@ public class AuthController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+  }
+  @GetMapping("/{id}")
+    public ResponseEntity<Account> findOne(@PathVariable Long id){
+        return new ResponseEntity<>(accountService.findOne(id),HttpStatus.OK);
   }
 
 
