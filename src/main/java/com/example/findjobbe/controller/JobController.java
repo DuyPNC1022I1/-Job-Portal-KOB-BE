@@ -88,28 +88,4 @@ public class JobController {
         return new ResponseEntity<>(jobService.findAllTest(), HttpStatus.OK);
     }
 
-
-    @GetMapping("/findByKeyWord/{key1},{key2}")
-    public ResponseEntity<List<Job>> findByKeyWord(@PathVariable String key1, @PathVariable String key2) {
-        List<Job> jobs = jobService.findAllTest();
-        List<Job> jobsByKeyWord = new ArrayList<>();
-        for (int i = 0; i < jobs.size(); i++) {
-            if (jobs.get(i).getCompany().getAccount().getName().toUpperCase().contains(key1.toUpperCase())) {
-                jobsByKeyWord.add(jobs.get(i));
-            } else if (jobs.get(i).getGender().equalsIgnoreCase(key1)) {
-                jobsByKeyWord.add(jobs.get(i));
-            } else if (jobs.get(i).getCity().getName().contains(key2.toUpperCase())) {
-                jobsByKeyWord.add(jobs.get(i));
-            } else if (jobs.get(i).getCareer().getName().toUpperCase().contains(key1.toUpperCase())) {
-                jobsByKeyWord.add(jobs.get(i));
-            } else {
-                System.out.println("no content!");
-            }
-        }
-        if (jobsByKeyWord.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(jobsByKeyWord, HttpStatus.OK);
-        }
-    }
 }
