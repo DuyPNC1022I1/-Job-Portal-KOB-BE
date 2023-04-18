@@ -127,4 +127,36 @@ public class JobService extends ICoreServiceJob{
         return searchList;
     }
 
+    public List<Job> searchAllByKey(String key1, String key2) {
+        List<Job> jobs = jobRepository.findAll();
+        List<Job> jobsByKeyWord = new ArrayList<>();
+        for (int i = 0; i < jobs.size(); i++) {
+            if (key1 != null && key2 != null) {
+                if ((jobs.get(i).getCompany().getAccount().getName().toUpperCase().contains(key1.toUpperCase()))
+                        && (jobs.get(i).getCity().getName().equals(key2))){
+                    jobsByKeyWord.add(jobs.get(i));
+                } else if ((jobs.get(i).getGender().toUpperCase().contains(key1.toUpperCase()) && (jobs.get(i).getCity().getName().equals(key2)))) {
+                    jobsByKeyWord.add(jobs.get(i));
+                } else if ((jobs.get(i).getCareer().getName().toUpperCase().contains(key1.toUpperCase()) && (jobs.get(i).getCity().getName().equals(key2)))) {
+                    jobsByKeyWord.add(jobs.get(i));
+                } else {
+                    System.out.println("no content!");
+                }
+            } else {
+                if (jobs.get(i).getCompany().getAccount().getName().toUpperCase().contains(key1.toUpperCase())) {
+                    jobsByKeyWord.add(jobs.get(i));
+                } else if (jobs.get(i).getGender().equalsIgnoreCase(key1)) {
+                    jobsByKeyWord.add(jobs.get(i));
+                } else if (jobs.get(i).getCity().getName().equals(key2)) {
+                    jobsByKeyWord.add(jobs.get(i));
+                } else if (jobs.get(i).getCareer().getName().toUpperCase().contains(key1.toUpperCase())) {
+                    jobsByKeyWord.add(jobs.get(i));
+                } else {
+                    System.out.println("no content!");
+                }
+            }
+        }
+        return jobsByKeyWord;
+    }
+
 }
