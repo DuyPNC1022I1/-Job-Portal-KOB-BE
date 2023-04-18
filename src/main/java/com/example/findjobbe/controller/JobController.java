@@ -120,5 +120,17 @@ public class JobController {
         return new ResponseEntity<>(jobService.searchAllFields(searchAll),HttpStatus.OK);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> update(@RequestBody Job job, @PathVariable Long id) {
+        job.setStartDate(java.time.LocalDate.now());
+        Job jobUpdate = jobService.findOne(id);
+        if (jobUpdate != null) {
+            jobService.save(job);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+    }
 
 }
