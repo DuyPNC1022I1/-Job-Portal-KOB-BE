@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -20,13 +22,13 @@ public class JobController {
     @Autowired
     private JobService jobService;
 
-//    @GetMapping
+    //    @GetMapping
 //    public ResponseEntity<Page<Job>> findAll(@PageableDefault(page = 5) Pageable pageable) {
 //        return new ResponseEntity<> (jobService.findAll(pageable), HttpStatus.OK);
 //    }
     @GetMapping
     public ResponseEntity<List<Job>> findAllTest() {
-        return new ResponseEntity<> (jobService.findAllTest(), HttpStatus.OK);
+        return new ResponseEntity<>(jobService.findAllTest(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -118,5 +120,17 @@ public class JobController {
         return new ResponseEntity<>(jobService.searchAllFields(searchAll),HttpStatus.OK);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> update(@RequestBody Job job, @PathVariable Long id) {
+        job.setStartDate(java.time.LocalDate.now());
+        Job jobUpdate = jobService.findOne(id);
+        if (jobUpdate != null) {
+            jobService.save(job);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+    }
 
 }

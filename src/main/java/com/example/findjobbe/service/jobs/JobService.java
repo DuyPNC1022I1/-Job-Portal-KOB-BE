@@ -8,7 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class JobService extends ICoreServiceJob{
@@ -61,10 +62,10 @@ public class JobService extends ICoreServiceJob{
 
     public Double[] checkSalary(Long salary){
         Double[] minMax = new Double[2];
-       if (salary==1){
-           minMax[0] = 10000D;
-           minMax[1] = 20000D;
-       }
+        if (salary==1){
+            minMax[0] = 10000D;
+            minMax[1] = 20000D;
+        }
         if (salary==2){
             minMax[0] = 20000D;
             minMax[1] = 30000D;
@@ -81,7 +82,7 @@ public class JobService extends ICoreServiceJob{
             minMax[0] = 50000D;
             minMax[1] = 60000D;
         }
-       return minMax;
+        return minMax;
     }
 
     public List<Job> searchAllFields(SearchAll searchAll){
