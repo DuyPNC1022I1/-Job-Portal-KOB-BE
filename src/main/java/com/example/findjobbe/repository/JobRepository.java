@@ -21,4 +21,5 @@ public interface JobRepository extends JpaRepository<Job,Long> {
     List<Job> findAllJobByCompanyAddress(@Param("address") String address);
     List<Job> findAllByCompany_City_Id(Long id);
     List<Job> findAllByEmployeeType_Id(Long id);
+
 }
