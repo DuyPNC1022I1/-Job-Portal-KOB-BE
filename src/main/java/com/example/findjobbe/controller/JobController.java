@@ -1,7 +1,7 @@
 package com.example.findjobbe.controller;
 
 import com.example.findjobbe.model.Job;
-import com.example.findjobbe.model.Search;
+import com.example.findjobbe.model.SearchAll;
 import com.example.findjobbe.service.jobs.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -83,39 +82,40 @@ public class JobController {
         jobService.save(jobUnlock);
         return new ResponseEntity<>(jobService.findAllTest(), HttpStatus.OK);
     }
-    @GetMapping("find-by-name")
+    @GetMapping("/find-by-name")
     public ResponseEntity<Page<Job>> findAllByJobName(@RequestParam("name")String name,@PageableDefault Pageable pageable){
         if (!name.equals("")){
             return new ResponseEntity<>(jobService.findAllByJobName(name,pageable),HttpStatus.OK);
         }
             return new ResponseEntity<>(jobService.findALl(pageable),HttpStatus.OK);
     }
-    @GetMapping("find-by-address")
+    @GetMapping("/find-by-address")
     public ResponseEntity<Page<Job>> findAllByAddress(@RequestParam("address")String address,@PageableDefault Pageable pageable){
         if (!address.equals("")){
             return new ResponseEntity<>(jobService.findALlByCompanyAddress(address,pageable),HttpStatus.OK);
         }
         return new ResponseEntity<>(jobService.findAll(pageable),HttpStatus.OK);
     }
-    @GetMapping("find-by-career/{id}")
+    @GetMapping("/find-by-career/{id}")
     public ResponseEntity<Page<Job>> findAllByCareer(@PathVariable Long id,@PageableDefault Pageable pageable){
             return new ResponseEntity<>(jobService.findAllByCareer(id,pageable),HttpStatus.OK);
     }
-    @GetMapping("find-by-city/{id}")
+    @GetMapping("/find-by-city/{id}")
     public ResponseEntity<Page<Job>> findAllByCity(@PathVariable Long id,@PageableDefault Pageable pageable){
         return new ResponseEntity<>(jobService.findAllByCity(id,pageable),HttpStatus.OK);
     }
-    @GetMapping("find-by-employeeType/{id}")
+    @GetMapping("/find-by-employeeType/{id}")
     public ResponseEntity<Page<Job>> findAllByEmployeeType(@PathVariable Long id,@PageableDefault Pageable pageable){
         return new ResponseEntity<>(jobService.findALlByEmployeeType(id,pageable),HttpStatus.OK);
     }
-    @GetMapping("find-by-salary/{min}/{max}")
+    @GetMapping("/find-by-salary/{min}/{max}")
     public ResponseEntity<List<Job>> findAllBySalary(@PathVariable("min") Double min,@PathVariable("max") Double max){
         return new ResponseEntity<>(jobService.findBySalary(min,max),HttpStatus.OK);
     }
-    @GetMapping("search")
-    public ResponseEntity<List<Job>> search(@RequestBody Search search){
-        return new ResponseEntity<>(jobService.search(search),HttpStatus.OK);
+
+    @PostMapping("/search-all")
+    public ResponseEntity<List<Job>> searchAll(@RequestBody SearchAll searchAll){
+        return new ResponseEntity<>(jobService.searchAllFields(searchAll),HttpStatus.OK);
     }
 
 }

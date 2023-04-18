@@ -1,15 +1,14 @@
 package com.example.findjobbe.service.jobs;
 
 import com.example.findjobbe.model.Job;
-import com.example.findjobbe.model.Search;
+import com.example.findjobbe.model.SearchAll;
 import com.example.findjobbe.repository.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class JobService extends ICoreServiceJob{
@@ -59,31 +58,70 @@ public class JobService extends ICoreServiceJob{
         }
     }
 
-    public List<Job>search(Search search){
+
+    public Double[] checkSalary(Long salary){
+        Double[] minMax = new Double[2];
+       if (salary==1){
+           minMax[0] = 10000D;
+           minMax[1] = 20000D;
+       }
+        if (salary==2){
+            minMax[0] = 20000D;
+            minMax[1] = 30000D;
+        }
+        if (salary==3){
+            minMax[0] = 30000D;
+            minMax[1] = 40000D;
+        }
+        if (salary==4){
+            minMax[0] = 40000D;
+            minMax[1] = 50000D;
+        }
+        if (salary==5){
+            minMax[0] = 50000D;
+            minMax[1] = 60000D;
+        }
+       return minMax;
+    }
+
+    public List<Job> searchAllFields(SearchAll searchAll){
         List<Job> searchList = new ArrayList<>();
-        if (search.getExpiration()!=null){
-            List<Job> listFind = jobRepository.findAllByExpiration(search.getExpiration());
-            copy(searchList,listFind);
+        List<String> expiration = searchAll.getExpiration();
+        if (!expiration.isEmpty()){
+            for (String e: expiration) {
+                List<Job> listFind = jobRepository.findAllByExpiration(Long.parseLong(e));
+                copy(searchList,listFind);
+            }
         }
-        if (search.getCity_id()!=null){
-            List<Job> jobList = jobRepository.findAllByCompany_City_Id(search.getCity_id());
-            copy(searchList,jobList);
+        List<String> cities = searchAll.getCity();
+        if (!cities.isEmpty()){
+            for (String c:cities){
+                List<Job> listFind = jobRepository.findAllByCompany_City_Id(Long.parseLong(c));
+                copy(searchList,listFind);
+            }
         }
-        if (search.getTypeTime()!=null){
-            List<Job> jobList = jobRepository.findAllByTypeTime(search.getTypeTime());
-            copy(searchList,jobList);
+        List<String> typeTime = searchAll.getTypeTime();
+        if (!typeTime.isEmpty()){
+            for (String t:typeTime){
+                List<Job> listFind = jobRepository.findAllByTypeTime(t);
+                copy(searchList,listFind);
+            }
         }
-        if (search.getEmployeeType_id()!=null){
-            List<Job> jobList = jobRepository.findAllByEmployeeType_Id(search.getEmployeeType_id());
-            copy(searchList,jobList);
+        List<String> gender = searchAll.getGender();
+        if (!gender.isEmpty()){
+            for (String g: gender){
+                List<Job> listFind = jobRepository.findAllByGender(g);
+                copy(searchList,listFind);
+            }
         }
-        if (search.getSalaryMin()!=null && search.getSalaryMax()!=null){
-            List<Job> jobList = findBySalary(search.getSalaryMin(), search.getSalaryMax());
-            copy(searchList,jobList);
-        }
-        if (search.getGender()!=null){
-            List<Job> jobList = jobRepository.findAllByGender(search.getGender());
-            copy(searchList,jobList);
+        List<String> salaries = searchAll.getSalary();
+        if (!salaries.isEmpty()){
+            for (String s:salaries){
+                Double min = checkSalary(Long.parseLong(s))[0];
+                Double max = checkSalary(Long.parseLong(s))[1];
+                List<Job> listFind = findBySalary(min,max);
+                copy(searchList,listFind);
+            }
         }
         return searchList;
     }
