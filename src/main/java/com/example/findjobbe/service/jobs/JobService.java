@@ -145,7 +145,7 @@ public class JobService extends ICoreServiceJob{
             } else {
                 if (jobs.get(i).getCompany().getAccount().getName().toUpperCase().contains(key1.toUpperCase())) {
                     jobsByKeyWord.add(jobs.get(i));
-                } else if (jobs.get(i).getGender().equalsIgnoreCase(key1)) {
+                } else if (jobs.get(i).getGender().toUpperCase().contains(key1.toUpperCase())) {
                     jobsByKeyWord.add(jobs.get(i));
                 } else if (jobs.get(i).getCity().getName().equals(key2)) {
                     jobsByKeyWord.add(jobs.get(i));
