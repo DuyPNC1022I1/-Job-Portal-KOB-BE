@@ -86,6 +86,7 @@ public class JobService extends ICoreServiceJob{
     }
 
     public List<Job> searchAllFields(SearchAll searchAll){
+        Integer count = 0;
         List<Job> searchList = new ArrayList<>();
         List<String> expiration = searchAll.getExpiration();
         if (!expiration.isEmpty()){
@@ -93,6 +94,8 @@ public class JobService extends ICoreServiceJob{
                 List<Job> listFind = jobRepository.findAllByExpiration(Long.parseLong(e));
                 copy(searchList,listFind);
             }
+        }else {
+            count ++;
         }
         List<String> cities = searchAll.getCity();
         if (!cities.isEmpty()){
@@ -100,6 +103,8 @@ public class JobService extends ICoreServiceJob{
                 List<Job> listFind = jobRepository.findAllByCompany_City_Id(Long.parseLong(c));
                 copy(searchList,listFind);
             }
+        }else {
+            count++;
         }
         List<String> typeTime = searchAll.getTypeTime();
         if (!typeTime.isEmpty()){
@@ -107,6 +112,8 @@ public class JobService extends ICoreServiceJob{
                 List<Job> listFind = jobRepository.findAllByTypeTime(t);
                 copy(searchList,listFind);
             }
+        }else {
+            count++;
         }
         List<String> gender = searchAll.getGender();
         if (!gender.isEmpty()){
@@ -114,6 +121,8 @@ public class JobService extends ICoreServiceJob{
                 List<Job> listFind = jobRepository.findAllByGender(g);
                 copy(searchList,listFind);
             }
+        }else {
+            count++;
         }
         List<String> salaries = searchAll.getSalary();
         if (!salaries.isEmpty()){
@@ -123,6 +132,12 @@ public class JobService extends ICoreServiceJob{
                 List<Job> listFind = findBySalary(min,max);
                 copy(searchList,listFind);
             }
+        }else {
+            count++;
+        }
+        if (count==5){
+            searchList=findAllTest();
+
         }
         return searchList;
     }
