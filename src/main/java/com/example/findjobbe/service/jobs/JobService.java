@@ -25,20 +25,20 @@ public class JobService extends ICoreServiceJob{
     public List<Job> findAllByCompany(Long companyId) {
         return jobRepository.findAllByCompany_Id(companyId);
     }
-    public List<Job> findAllByJobName(String name){
-        return jobRepository.findAllJobByName(name);
+    public Page<Job> findAllByJobName(String name, Pageable pageable){
+        return jobRepository.findAllJobByName(name,pageable);
     }
-    public List<Job> findALlByCompanyAddress(String address){
-        return jobRepository.findAllJobByCompanyAddress(address);
+    public Page<Job> findALlByCompanyAddress(String address,Pageable pageable){
+        return jobRepository.findAllJobByCompanyAddress(address,pageable);
     }
-    public List<Job> findAllByCareer(Long id){
-        return jobRepository.findAllByCareer_Id(id);
+    public Page<Job> findAllByCareer(Long id,Pageable pageable){
+        return jobRepository.findAllByCareer_Id(id,pageable);
     }
-    public List<Job> findAllByCity(Long id){
-        return jobRepository.findAllByCompany_City_Id(id);
+    public Page<Job> findAllByCity(Long id,Pageable pageable){
+        return jobRepository.findAllByCompany_City_Id(id,pageable);
     }
-    public List<Job> findALlByEmployeeType(Long id){
-        return jobRepository.findAllByEmployeeType_Id(id);
+    public Page<Job> findALlByEmployeeType(Long id,Pageable pageable){
+        return jobRepository.findAllByEmployeeType_Id(id,pageable);
     }
     public List<Job> findBySalary(Double min,Double max){
         List<Job> jobs = findAllTest();
@@ -62,10 +62,10 @@ public class JobService extends ICoreServiceJob{
 
     public Double[] checkSalary(Long salary){
         Double[] minMax = new Double[2];
-       if (salary==1){
-           minMax[0] = 10000D;
-           minMax[1] = 20000D;
-       }
+        if (salary==1){
+            minMax[0] = 10000D;
+            minMax[1] = 20000D;
+        }
         if (salary==2){
             minMax[0] = 20000D;
             minMax[1] = 30000D;
@@ -82,7 +82,7 @@ public class JobService extends ICoreServiceJob{
             minMax[0] = 50000D;
             minMax[1] = 60000D;
         }
-       return minMax;
+        return minMax;
     }
 
     public List<Job> searchAllFields(SearchAll searchAll){
