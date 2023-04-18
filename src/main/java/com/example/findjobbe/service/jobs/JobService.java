@@ -184,16 +184,16 @@ public class JobService extends ICoreServiceJob {
         return jobsByKeyWord;
     }
     public List<Job> findAllByIdDesc(){
-        return jobRepository.findAllByIdOrderByIdDesc();
+        return jobRepository.findAllByOrderByIdDesc();
     }
     public List<Job> findAllByIdAsc(){
-        return jobRepository.findAllByIdOrderByIdAsc();
+        return jobRepository.findAllByOrderByIdAsc();
     }
     public List<Job> findAllBySalaryDesc(){
-        return jobRepository.findAllBySalaryMaxOrderBySalaryMaxDesc();
+        return jobRepository.findAllByOrderBySalaryMaxDesc();
     }
     public List<Job> findAllBySalaryAsc(){
-        return jobRepository.findAllBySalaryMaxOrderBySalaryMaxAsc();
+        return jobRepository.findAllByOrderBySalaryMaxAsc();
     }
 }
 
