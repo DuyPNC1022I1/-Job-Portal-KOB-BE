@@ -118,4 +118,5 @@ public class JobController {
         return new ResponseEntity<>(jobService.searchAllFields(searchAll),HttpStatus.OK);
     }
 
+
 }
