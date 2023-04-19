@@ -74,7 +74,7 @@ public class JobController {
             jobBlock.setStatus(true); //unlock job
         }
         jobService.save(jobBlock);
-        return new ResponseEntity<>(jobService.findAllTest(), HttpStatus.OK);
+        return new ResponseEntity<>(jobService.findAllByCompany(jobBlock.getCompany().getId()), HttpStatus.OK);
     }
 
     //Unlock job
