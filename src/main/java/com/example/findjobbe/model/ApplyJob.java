@@ -6,22 +6,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class ApplyJob {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @OneToOne
-    private Account account;
-    private String imagePath;
-    private String phoneNumber;
-    private String cvPath; //link cv ứng  viên
-    private String address;
-
+    Long id;
+    @ManyToOne
+    User user;
+    @ManyToOne
+    Job job;
+    String status;
 }
