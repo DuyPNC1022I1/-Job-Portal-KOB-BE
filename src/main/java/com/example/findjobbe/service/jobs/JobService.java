@@ -6,8 +6,6 @@ import com.example.findjobbe.repository.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -154,7 +152,7 @@ public class JobService extends ICoreServiceJob {
 
     public List<Job> searchAllByKey(String key1, String key2) {
         List<Job> jobsByKeyWord = new ArrayList<>();
-        if (key2 != null && key1 != null) {
+        if (!key2.equals("") && !key1.equals("")) {
             List<Job> jobs = jobRepository.findAllByCompany_City_Id(Long.parseLong(key2));
             for (Job j : jobs) {
                 if (j.getCompany().getAccount().getName().toUpperCase().contains(key1.toUpperCase())) {
@@ -173,9 +171,8 @@ public class JobService extends ICoreServiceJob {
                     copy(jobsByKeyWord, findList);
                 }
             }
-            return jobsByKeyWord;
         } else {
-            if (key1 != null) {
+            if (!key1.equals("")) {
                 List<Job> jobs = jobRepository.findAll();
                 for (Job j : jobs) {
                     if (j.getCompany().getAccount().getName().toUpperCase().contains(key1.toUpperCase())) {
@@ -190,11 +187,11 @@ public class JobService extends ICoreServiceJob {
                 }
                 return jobsByKeyWord;
             }
-            if (key2 != null) {
+            if (!key2.equals("")) {
                 jobsByKeyWord = jobRepository.findAllByCompany_City_Id(Long.parseLong(key2));
                 return jobsByKeyWord;
             }
-            return jobsByKeyWord = jobRepository.findAll();
+            jobsByKeyWord = jobRepository.findAll();
         }
     }
 
@@ -215,5 +212,3 @@ public class JobService extends ICoreServiceJob {
     }
 
 }
-
-
