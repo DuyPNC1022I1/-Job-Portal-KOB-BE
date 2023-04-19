@@ -37,6 +37,11 @@ public interface JobRepository extends JpaRepository<Job,Long> {
     List<Job> findAllByExpiration(Long expiration);
     List<Job> findAllByTypeTime(String typeTime);
     List<Job> findAllByGender(String gender);
+    List<Job> findAllByOrderByIdDesc();
+    List<Job> findAllByOrderByIdAsc();
+    List<Job> findAllByOrderBySalaryMaxDesc();
+    List<Job> findAllByOrderBySalaryMaxAsc();
+
 
 
 }
