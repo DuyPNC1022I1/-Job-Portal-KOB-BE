@@ -149,19 +149,7 @@ public class JobController {
     }
     @PostMapping("/sort")
     public ResponseEntity<List<Job>> sort(@RequestParam String sort){
-        if (sort.equals("newest")){
-            return new ResponseEntity<>(jobService.findAllByIdDesc(),HttpStatus.OK);
-        }
-        if (sort.equals("oldest")){
-            return new ResponseEntity<>(jobService.findAllByIdAsc(),HttpStatus.OK);
-        }
-        if (sort.equals("salaryMin")){
-            return new ResponseEntity<>(jobService.findAllBySalaryDesc(),HttpStatus.OK);
-        }
-        if (sort.equals("salaryMax")){
-            return new ResponseEntity<>(jobService.findAllBySalaryAsc(),HttpStatus.OK);
-        }
-        return new ResponseEntity<>(jobService.findAllTest(),HttpStatus.OK);
+     return new ResponseEntity<>(jobService.sort(sort),HttpStatus.OK);
     }
 
 

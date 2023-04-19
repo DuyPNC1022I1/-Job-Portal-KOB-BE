@@ -6,6 +6,8 @@ import com.example.findjobbe.repository.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -151,50 +153,67 @@ public class JobService extends ICoreServiceJob {
     }
 
     public List<Job> searchAllByKey(String key1, String key2) {
-        List<Job> jobs = jobRepository.findAll();
         List<Job> jobsByKeyWord = new ArrayList<>();
-        for (int i = 0; i < jobs.size(); i++) {
-            if (key1 != null && key2 != null) {
-                if ((jobs.get(i).getCompany().getAccount().getName().toUpperCase().contains(key1.toUpperCase()))
-                        && (jobs.get(i).getCity().getName().equals(key2))) {
-                    jobsByKeyWord.add(jobs.get(i));
-                } else if ((jobs.get(i).getGender().toUpperCase().contains(key1.toUpperCase())
-                        && (jobs.get(i).getCity().getName().equals(key2)))) {
-                    jobsByKeyWord.add(jobs.get(i));
-                } else if ((jobs.get(i).getCareer().getName().toUpperCase().contains(key1.toUpperCase())
-                        && (jobs.get(i).getCity().getName().equals(key2)))) {
-                    jobsByKeyWord.add(jobs.get(i));
-                } else {
-                    System.out.println("no content!");
+        if (key2 != null && key1 != null) {
+            List<Job> jobs = jobRepository.findAllByCompany_City_Id(Long.parseLong(key2));
+            for (Job j : jobs) {
+                if (j.getCompany().getAccount().getName().toUpperCase().contains(key1.toUpperCase())) {
+                    List<Job> findList = new ArrayList<>();
+                    findList.add(j);
+                    copy(jobsByKeyWord, findList);
                 }
-            } else {
-                if (jobs.get(i).getCompany().getAccount().getName().toUpperCase().contains(key1.toUpperCase())) {
-                    jobsByKeyWord.add(jobs.get(i));
-                } else if (jobs.get(i).getGender().toUpperCase().contains(key1.toUpperCase())) {
-                    jobsByKeyWord.add(jobs.get(i));
-                } else if (jobs.get(i).getCity().getName().equals(key2)) {
-                    jobsByKeyWord.add(jobs.get(i));
-                } else if (jobs.get(i).getCareer().getName().toUpperCase().contains(key1.toUpperCase())) {
-                    jobsByKeyWord.add(jobs.get(i));
-                } else {
-                    System.out.println("no content!");
+                if (j.getEmployeeType().getName().toUpperCase().contains(key1.toUpperCase())) {
+                    List<Job> findList = new ArrayList<>();
+                    findList.add(j);
+                    copy(jobsByKeyWord, findList);
+                }
+                if (j.getGender().equalsIgnoreCase(key1)) {
+                    List<Job> findList = new ArrayList<>();
+                    findList.add(j);
+                    copy(jobsByKeyWord, findList);
                 }
             }
+            return jobsByKeyWord;
+        } else {
+            if (key1 != null) {
+                List<Job> jobs = jobRepository.findAll();
+                for (Job j : jobs) {
+                    if (j.getCompany().getAccount().getName().toUpperCase().contains(key1.toUpperCase())) {
+                        jobsByKeyWord.add(j);
+                    }
+                    if (j.getEmployeeType().getName().toUpperCase().contains(key1.toUpperCase())) {
+                        jobsByKeyWord.add(j);
+                    }
+                    if (j.getGender().equalsIgnoreCase(key1)) {
+                        jobsByKeyWord.add(j);
+                    }
+                }
+                return jobsByKeyWord;
+            }
+            if (key2 != null) {
+                jobsByKeyWord = jobRepository.findAllByCompany_City_Id(Long.parseLong(key2));
+                return jobsByKeyWord;
+            }
+            return jobsByKeyWord = jobRepository.findAll();
         }
-        return jobsByKeyWord;
     }
-    public List<Job> findAllByIdDesc(){
-        return jobRepository.findAllByOrderByIdDesc();
+
+    public List<Job> sort(String sort){
+        if (sort.equals("newest")){
+            return jobRepository.findAllByOrderByIdDesc();
+        }
+        if (sort.equals("oldest")){
+            return jobRepository.findAllByOrderByIdAsc();
+        }
+        if (sort.equals("salaryMin")){
+            return jobRepository.findAllByOrderBySalaryMaxDesc();
+        }
+        if (sort.equals("salaryMax")){
+            return jobRepository.findAllByOrderBySalaryMaxAsc();
+        }
+        return findAllTest();
     }
-    public List<Job> findAllByIdAsc(){
-        return jobRepository.findAllByOrderByIdAsc();
-    }
-    public List<Job> findAllBySalaryDesc(){
-        return jobRepository.findAllByOrderBySalaryMaxDesc();
-    }
-    public List<Job> findAllBySalaryAsc(){
-        return jobRepository.findAllByOrderBySalaryMaxAsc();
-    }
+
 }
 
 
