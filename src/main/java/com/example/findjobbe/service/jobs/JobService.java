@@ -192,7 +192,9 @@ public class JobService extends ICoreServiceJob {
                 return jobsByKeyWord;
             }
             jobsByKeyWord = jobRepository.findAll();
+
         }
+        return jobsByKeyWord;
     }
 
     public List<Job> sort(String sort){

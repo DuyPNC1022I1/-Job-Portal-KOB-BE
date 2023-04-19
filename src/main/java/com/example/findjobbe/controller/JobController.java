@@ -152,5 +152,4 @@ public class JobController {
      return new ResponseEntity<>(jobService.sort(sort),HttpStatus.OK);
     }
 
-
 }
