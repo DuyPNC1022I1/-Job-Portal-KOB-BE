@@ -2,6 +2,7 @@ package com.example.findjobbe.controller;
 
 import com.example.findjobbe.model.Job;
 import com.example.findjobbe.model.SearchAll;
+import com.example.findjobbe.model.SearchKey;
 import com.example.findjobbe.service.jobs.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -138,15 +139,12 @@ public class JobController {
         }
     }
 
-    @GetMapping("/findByKeyWord/{key1}/{key2}")
-    public ResponseEntity<List<Job>> findByKeyWord(@PathVariable String key1, @PathVariable String key2) {
-        List<Job> jobs = jobService.searchAllByKey(key1, key2);
-        if (jobs.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(jobs, HttpStatus.OK);
-        }
+    @PostMapping("/findByKeyWord")
+    public ResponseEntity<List<Job>> findByKeyWord(@RequestBody SearchKey searchKey) {
+        List<Job> jobs = jobService.searchAllByKey(searchKey.getKey1(),searchKey.getKey2());
+        return new ResponseEntity<>(jobs, HttpStatus.OK);
     }
+
     @PostMapping("/sort")
     public ResponseEntity<List<Job>> sort(@RequestParam String sort){
      return new ResponseEntity<>(jobService.sort(sort),HttpStatus.OK);
