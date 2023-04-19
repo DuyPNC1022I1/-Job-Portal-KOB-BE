@@ -70,26 +70,31 @@ public class JobService extends ICoreServiceJob {
 
     public Double[] checkSalary(Long salary) {
         Double[] minMax = new Double[2];
+        if (salary == 0) {
+            minMax[0] = 0D;
+            minMax[1] = 1000D;
+        }
         if (salary == 1) {
-            minMax[0] = 10000D;
-            minMax[1] = 20000D;
+            minMax[0] = 1000D;
+            minMax[1] = 2000D;
         }
         if (salary == 2) {
-            minMax[0] = 20000D;
-            minMax[1] = 30000D;
+            minMax[0] = 2000D;
+            minMax[1] = 3000D;
         }
         if (salary == 3) {
-            minMax[0] = 30000D;
-            minMax[1] = 40000D;
+            minMax[0] = 3000D;
+            minMax[1] = 4000D;
         }
         if (salary == 4) {
-            minMax[0] = 40000D;
-            minMax[1] = 50000D;
+            minMax[0] = 4000D;
+            minMax[1] = 5000D;
         }
         if (salary == 5) {
-            minMax[0] = 50000D;
-            minMax[1] = 60000D;
+            minMax[0] = 5000D;
+            minMax[1] = 500000000D;
         }
+
         return minMax;
     }
 
@@ -205,12 +210,24 @@ public class JobService extends ICoreServiceJob {
             return jobRepository.findAllByOrderByIdAsc();
         }
         if (sort.equals("salaryMin")){
-            return jobRepository.findAllByOrderBySalaryMaxDesc();
-        }
-        if (sort.equals("salaryMax")){
             return jobRepository.findAllByOrderBySalaryMaxAsc();
         }
+        if (sort.equals("salaryMax")){
+            return jobRepository.findAllByOrderBySalaryMaxDesc();
+        }
         return findAllTest();
+    }
+
+    //Xử lý ẩn job-post có status=false
+    public List<Job> removeJob(List<Job> jobs) {
+        List<Job> jobsToRemove = new ArrayList<>();
+        for (Job job : jobs) {
+            if (!job.getStatus()) {
+                jobsToRemove.add(job);
+            }
+        }
+        jobs.removeAll(jobsToRemove);
+        return jobs;
     }
 
 }

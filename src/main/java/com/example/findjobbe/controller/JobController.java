@@ -29,12 +29,14 @@ public class JobController {
 //    }
     @GetMapping
     public ResponseEntity<List<Job>> findAllTest() {
-        return new ResponseEntity<>(jobService.findAllTest(), HttpStatus.OK);
+        List<Job> jobs = jobService.findAllTest();
+        jobService.removeJob(jobs);
+        return new ResponseEntity<>(jobs, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Job> findOne(@PathVariable Long id) {
-        if (jobService.findOne(id) == null) {
+        if (jobService.findOne(id) == null || (!jobService.findOne(id).getStatus())) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(jobService.findOne(id), HttpStatus.OK);
@@ -142,6 +144,7 @@ public class JobController {
     @PostMapping("/findByKeyWord")
     public ResponseEntity<List<Job>> findByKeyWord(@RequestBody SearchKey searchKey) {
         List<Job> jobs = jobService.searchAllByKey(searchKey.getKey1(),searchKey.getKey2());
+        jobService.removeJob(jobs);
         return new ResponseEntity<>(jobs, HttpStatus.OK);
     }
 
