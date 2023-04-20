@@ -36,7 +36,7 @@ public class JobController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Job> findOne(@PathVariable Long id) {
-        if (jobService.findOne(id) == null || (!jobService.findOne(id).getStatus())) {
+        if (jobService.findOne(id) == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(jobService.findOne(id), HttpStatus.OK);
@@ -143,14 +143,14 @@ public class JobController {
 
     @PostMapping("/findByKeyWord")
     public ResponseEntity<List<Job>> findByKeyWord(@RequestBody SearchKey searchKey) {
-        List<Job> jobs = jobService.searchAllByKey(searchKey.getKey1(),searchKey.getKey2());
+        List<Job> jobs = jobService.searchAllByKey(searchKey.getKey1(), searchKey.getKey2());
         jobService.removeJob(jobs);
         return new ResponseEntity<>(jobs, HttpStatus.OK);
     }
 
     @PostMapping("/sort")
-    public ResponseEntity<List<Job>> sort(@RequestParam String sort){
-     return new ResponseEntity<>(jobService.sort(sort),HttpStatus.OK);
+    public ResponseEntity<List<Job>> sort(@RequestParam String sort) {
+        return new ResponseEntity<>(jobService.sort(sort), HttpStatus.OK);
     }
 
 }
