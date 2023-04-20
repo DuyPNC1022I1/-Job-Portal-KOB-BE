@@ -4,6 +4,7 @@ import com.example.findjobbe.model.*;
 import com.example.findjobbe.repository.ApplyJobRepository;
 import com.example.findjobbe.service.CompanyService;
 import com.example.findjobbe.service.ICoreService;
+import com.example.findjobbe.service.Notification.NotificationService;
 import com.example.findjobbe.service.UserService;
 import com.example.findjobbe.service.jobs.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ public class ApplyJobService implements ICoreService<ApplyJob> {
     JobService jobService;
     @Autowired
     CompanyService companyService;
+    @Autowired
+    NotificationService notificationService;
 
 
     @Override
@@ -58,6 +61,7 @@ public class ApplyJobService implements ICoreService<ApplyJob> {
                            +job.getCompany().getAccount().getName() +", please check.";
             notification.setText(text);
             notification.setStatus(true);
+            notificationService.save(notification);
             return true;
         }
         return false;
@@ -75,9 +79,34 @@ public class ApplyJobService implements ICoreService<ApplyJob> {
                         + job.getCompany().getAccount().getName() + " !";
                 notification.setText(text);
                 notification.setStatus(true);
+                notificationService.save(notification);
                 return true;
         }
         return false;
+    }
+
+    public Boolean acceptApplyJob(Long id){
+        ApplyJob applyJob= applyJobRepository.findById(id).orElse(null);
+        if (applyJob != null){
+            applyJob.setStatus("Accepted");
+            applyJobRepository.save(applyJob);
+            Notification notification = new Notification();
+            String text = applyJob.getJob().getCompany().getAccount().getName() + " accepted your apply for"
+                    + applyJob.getJob().getCareer().getName()+"-"+applyJob.getJob().getCompany().getAccount().getName();
+            notification.setText(text);
+            notification.setUser(applyJob.getUser());
+            notificationService.save(notification);
+            Job job = applyJob.getJob();
+            Long quantity = job.getQuantity();
+            if (quantity >0 ){
+                if (quantity==1){
+                    job.setQuantity(0L);
+                }else {
+                    job.setQuantity(quantity-1);
+                }
+
+            }
+        }
     }
 
 

@@ -15,10 +15,12 @@ import javax.persistence.*;
 public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
     @ManyToOne
-    Company company;
-    String text;
-    Boolean status;
+    private Company company;
+    @ManyToOne
+    private User user;
+    private String text;
+    private Boolean status;
 
 }
