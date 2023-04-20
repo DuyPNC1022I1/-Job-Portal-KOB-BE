@@ -110,5 +110,4 @@ public class ApplyJobService implements ICoreService<ApplyJob> {
     }
 
 
-
 }
