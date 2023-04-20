@@ -210,12 +210,24 @@ public class JobService extends ICoreServiceJob {
             return jobRepository.findAllByOrderByIdAsc();
         }
         if (sort.equals("salaryMin")){
-            return jobRepository.findAllByOrderBySalaryMaxDesc();
-        }
-        if (sort.equals("salaryMax")){
             return jobRepository.findAllByOrderBySalaryMaxAsc();
         }
+        if (sort.equals("salaryMax")){
+            return jobRepository.findAllByOrderBySalaryMaxDesc();
+        }
         return findAllTest();
+    }
+
+    //Xử lý ẩn job-post có status=false
+    public List<Job> removeJob(List<Job> jobs) {
+        List<Job> jobsToRemove = new ArrayList<>();
+        for (Job job : jobs) {
+            if (!job.getStatus()) {
+                jobsToRemove.add(job);
+            }
+        }
+        jobs.removeAll(jobsToRemove);
+        return jobs;
     }
 
 }
