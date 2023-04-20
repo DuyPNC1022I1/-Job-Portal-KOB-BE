@@ -3,6 +3,7 @@ package com.example.findjobbe.service;
 
 import com.example.findjobbe.model.Account;
 import com.example.findjobbe.model.Company;
+import com.example.findjobbe.model.Password;
 import com.example.findjobbe.model.User;
 import com.example.findjobbe.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,5 +103,14 @@ public class AccountService implements ICoreService<Account> {
     public void delete(Long id) {
         accountRepository.deleteById(id);
 
+    }
+    public Boolean changePassword(Password password){
+        Account account = accountRepository.findById(Long.parseLong(password.getAccountId())).orElse(null);
+        if (account!=null && account.getPassword().equals(password.getOldPassword())){
+            account.setPassword(password.getNewPassword());
+            accountRepository.save(account);
+            return true;
+        }
+        return false;
     }
 }
