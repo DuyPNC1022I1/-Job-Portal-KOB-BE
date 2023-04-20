@@ -179,17 +179,22 @@ public class JobService extends ICoreServiceJob {
         } else {
             if (!key1.equals("")) {
                 List<Job> jobs = jobRepository.findAll();
+                List<Job> findList = new ArrayList<>();
                 for (Job j : jobs) {
                     if (j.getCompany().getAccount().getName().toUpperCase().contains(key1.toUpperCase())) {
-                        jobsByKeyWord.add(j);
+                        findList.add(j);
+                        copy(jobsByKeyWord,findList);
                     }
                     if (j.getEmployeeType().getName().toUpperCase().contains(key1.toUpperCase())) {
-                        jobsByKeyWord.add(j);
+                        findList.add(j);
+                        copy(jobsByKeyWord,findList);
                     }
                     if (j.getGender().equalsIgnoreCase(key1)) {
-                        jobsByKeyWord.add(j);
+                        findList.add(j);
+                        copy(jobsByKeyWord,findList);
                     }
                 }
+
                 return jobsByKeyWord;
             }
             if (!key2.equals("")) {

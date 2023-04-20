@@ -19,13 +19,13 @@ public class ApplyJobService {
     @Autowired
     JobService jobService;
 
-    public boolean applyJob(Long userId,Long jobId){
-        User user = userService.findOne(userId);
-        Job job = jobService.findOne(jobId);
-        if (user!=null && job!=null){
-
-
-        }
-
-    }
+//    public boolean applyJob(Long userId,Long jobId){
+//        User user = userService.findOne(userId);
+//        Job job = jobService.findOne(jobId);
+//        if (user!=null && job!=null){
+//
+//
+//        }
+//
+//    }
 }
