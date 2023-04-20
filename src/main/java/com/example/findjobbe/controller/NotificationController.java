@@ -19,6 +19,11 @@ public class NotificationController {
     public ResponseEntity<List<Notification>> getNotificationById(@PathVariable Long id){
         return new ResponseEntity<>(notificationService.findAllById(id), HttpStatus.OK);
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<Void> readNotification(@PathVariable Long id){
+        notificationService.readNotification(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 
 }

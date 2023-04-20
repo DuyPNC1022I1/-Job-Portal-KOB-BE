@@ -47,6 +47,13 @@ public class NotificationService implements ICoreService<Notification> {
         }
         return notificationRepository.findAllByUser_Id(id);
     }
+    public void readNotification(Long id){
+        Notification notification = notificationRepository.findById(id).orElse(null);
+        if (notification!=null){
+            notification.setStatus(false);
+            notificationRepository.save(notification);
+        }
+    }
 
 
 }
