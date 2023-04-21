@@ -21,5 +21,10 @@ public class UserController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+    @PutMapping
+    public ResponseEntity<Void> updateUser(@RequestBody User user){
+        userService.save(user);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }
