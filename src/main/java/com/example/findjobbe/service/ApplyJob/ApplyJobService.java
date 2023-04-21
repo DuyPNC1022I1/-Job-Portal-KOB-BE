@@ -61,10 +61,11 @@ public class ApplyJobService implements ICoreService<ApplyJob> {
             applyJob.setStatus("Pending");
             applyJobRepository.save(applyJob);
             Notification notification = new Notification();
-            String text = user.getAccount().getName() + "applied for"+ job.getCareer().getName()
-                           +job.getCompany().getAccount().getName() +", please check.";
+            String text = user.getAccount().getName() + " applied for "+ job.getCareer().getName()+"-"+
+                           job.getCompany().getAccount().getName();
             notification.setText(text);
             notification.setStatus(true);
+            notification.setCompany(applyJob.getJob().getCompany());
             notificationService.save(notification);
             return true;
         }
