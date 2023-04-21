@@ -23,8 +23,11 @@ public class UserController {
     }
     @PutMapping
     public ResponseEntity<Void> updateUser(@RequestBody User user){
-        userService.save(user);
-        return new ResponseEntity<>(HttpStatus.OK);
+        if (userService.updateUser(user)){
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
     }
 
 }
