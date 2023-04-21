@@ -143,7 +143,8 @@ public class ApplyJobService implements ICoreService<ApplyJob> {
        return false;
     }
 
-
-
+    public List<ApplyJob> findAllByCompanyId(Long id){
+        return applyJobRepository.findAllByJob_Company_Id(id);
+    }
 
 }

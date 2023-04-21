@@ -1,10 +1,14 @@
 package com.example.findjobbe.controller;
 
+import com.example.findjobbe.model.ApplyJob;
 import com.example.findjobbe.service.ApplyJob.ApplyJobService;
+import jdk.internal.dynalink.linker.LinkerServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin("*")
@@ -40,5 +44,10 @@ public class ApplyJobController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping("/find-apply-job/{id}")
+    public ResponseEntity<List<ApplyJob>> findALlByCompanyId(@PathVariable Long id){
+        return new ResponseEntity<>(applyJobService.findAllByCompanyId(id),HttpStatus.OK);
     }
 }
