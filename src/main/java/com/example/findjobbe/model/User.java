@@ -21,7 +21,6 @@ public class User {
     private Account account;
     private String imagePath;
     private String phoneNumber;
-    private String cvPath; //link cv ứng  viên
     private String address;
     @ManyToOne
     private CV cv;
