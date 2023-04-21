@@ -6,22 +6,21 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
+import java.time.LocalDate;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class CV {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne
-    private Account account;
-    private String imagePath;
-    private String phoneNumber;
-    private String address;
-    @ManyToOne
-    private CV cv;
+    private String cvPath;
+    private String education;
+    private String experience;
+    private LocalDate dateOfBirth;
+    private String hobby;
+
 }

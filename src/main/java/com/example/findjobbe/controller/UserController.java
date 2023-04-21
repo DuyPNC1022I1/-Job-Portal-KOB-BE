@@ -21,5 +21,13 @@ public class UserController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+    @PutMapping
+    public ResponseEntity<Void> updateUser(@RequestBody User user){
+        if (userService.updateUser(user)){
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+    }
 
 }

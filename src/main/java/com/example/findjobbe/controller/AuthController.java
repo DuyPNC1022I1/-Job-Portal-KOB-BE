@@ -1,6 +1,7 @@
 package com.example.findjobbe.controller;
 
 import com.example.findjobbe.model.Account;
+import com.example.findjobbe.model.Password;
 import com.example.findjobbe.service.AccountService;
 import com.example.findjobbe.service.CompanyService;
 import com.example.findjobbe.service.UserService;
@@ -72,6 +73,12 @@ public class AuthController {
     public ResponseEntity<Account> findOne(@PathVariable Long id){
         return new ResponseEntity<>(accountService.findOne(id),HttpStatus.OK);
   }
-
+  @PostMapping("/change-password")
+  public ResponseEntity<Void> changePassword(@RequestBody Password password){
+     if (accountService.changePassword(password)){
+         return new ResponseEntity<>(HttpStatus.OK);
+     }
+     return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+  }
 
 }

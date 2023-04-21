@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ApplyJobService implements ICoreService<ApplyJob> {
     @Autowired
@@ -46,6 +48,8 @@ public class ApplyJobService implements ICoreService<ApplyJob> {
         applyJobRepository.deleteById(id);
 
     }
+
+    //ứng tuyển
     public boolean applyJob(Long jobId,Long userId){
         User user = userService.findOne(userId);
         Job job = jobService.findOne(jobId);
@@ -67,16 +71,15 @@ public class ApplyJobService implements ICoreService<ApplyJob> {
         return false;
     }
 
-    public boolean CancelApplyJob(Long userId,Long jobId){
-        User user = userService.findOne(userId);
-        Job job = jobService.findOne(jobId);
-        ApplyJob applyJobFind = applyJobRepository.findApplyJobByJob_IdAndUser_Id(jobId,userId);
-        if (user!=null && job!=null && applyJobFind != null){
+    //hủy ứng tuyển
+    public boolean cancelApplyJob(Long applyJobId){
+        ApplyJob applyJobFind = applyJobRepository.findById(applyJobId).orElse(null);
+        if (applyJobFind!=null){
                 applyJobFind.setStatus("Canceled");
                 applyJobRepository.save(applyJobFind);
                 Notification notification = new Notification();
-                String text = user.getAccount().getName() + " canceled "+ job.getCareer().getName()
-                        + job.getCompany().getAccount().getName() + " !";
+                String text = applyJobFind.getUser().getAccount().getName() + " canceled "+ applyJobFind.getJob().getCareer().getName()
+                        + applyJobFind.getJob().getCompany().getAccount().getName() + " !";
                 notification.setText(text);
                 notification.setStatus(true);
                 notificationService.save(notification);
@@ -85,6 +88,7 @@ public class ApplyJobService implements ICoreService<ApplyJob> {
         return false;
     }
 
+    //chấp nhận apply
     public Boolean acceptApplyJob(Long id){
         ApplyJob applyJob= applyJobRepository.findById(id).orElse(null);
         if (applyJob != null){
@@ -95,20 +99,51 @@ public class ApplyJobService implements ICoreService<ApplyJob> {
                     + applyJob.getJob().getCareer().getName()+"-"+applyJob.getJob().getCompany().getAccount().getName();
             notification.setText(text);
             notification.setUser(applyJob.getUser());
+            notification.setStatus(true);
             notificationService.save(notification);
             Job job = applyJob.getJob();
             Long quantity = job.getQuantity();
             if (quantity >0 ){
                 if (quantity==1){
                     job.setQuantity(0L);
+                    job.setStatus(false);
+                    jobService.save(job);
+                    List<ApplyJob> applyJobs = applyJobRepository.findAllByJob_Id(applyJob.getId());
+                    for (ApplyJob a:applyJobs) {
+                        if (a.getStatus().equals("Pending")){
+                            rejectApplyJob(a.getId());
+                        }
+                    }
                 }else {
                     job.setQuantity(quantity-1);
+                    jobService.save(job);
                 }
 
             }
+            return true;
         }
-        return null;
+        return false;
     }
+
+    public Boolean rejectApplyJob(Long id){
+        ApplyJob applyJob= applyJobRepository.findById(id).orElse(null);
+        if (applyJob!=null){
+            applyJob.setStatus("Rejected");
+            applyJobRepository.save(applyJob);
+            Notification notification = new Notification();
+            String text = applyJob.getJob().getCompany().getAccount().getName()+
+                    " rejected your apply for "+applyJob.getJob().getCareer().getName()+
+                    "-"+applyJob.getJob().getCompany().getAccount().getName();
+            notification.setText(text);
+            notification.setUser(applyJob.getUser());
+            notification.setStatus(true);
+            notificationService.save(notification);
+            return true;
+        }
+       return false;
+    }
+
+
 
 
 }
