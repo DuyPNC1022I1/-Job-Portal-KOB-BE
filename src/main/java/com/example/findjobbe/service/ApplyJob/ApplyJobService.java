@@ -82,6 +82,7 @@ public class ApplyJobService implements ICoreService<ApplyJob> {
                 String text = applyJobFind.getUser().getAccount().getName() + " canceled "+ applyJobFind.getJob().getCareer().getName()
                         + applyJobFind.getJob().getCompany().getAccount().getName() + " !";
                 notification.setText(text);
+                notification.setCompany(applyJobFind.getJob().getCompany());
                 notification.setStatus(true);
                 notificationService.save(notification);
                 return true;
@@ -147,5 +148,9 @@ public class ApplyJobService implements ICoreService<ApplyJob> {
     public List<ApplyJob> findAllByCompanyId(Long id){
         return applyJobRepository.findAllByJob_Company_Id(id);
     }
+    public List<ApplyJob> findAllByUserId(Long id){
+        return applyJobRepository.findAllByUserId(id);
+    }
+
 
 }

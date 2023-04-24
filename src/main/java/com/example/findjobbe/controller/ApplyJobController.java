@@ -50,4 +50,8 @@ public class ApplyJobController {
     public ResponseEntity<List<ApplyJob>> findALlByCompanyId(@PathVariable Long id){
         return new ResponseEntity<>(applyJobService.findAllByCompanyId(id),HttpStatus.OK);
     }
+    @PostMapping("/find-user-apply-job/{id}")
+    public ResponseEntity<List<ApplyJob>> findALlByUserId(@PathVariable Long id){
+        return new ResponseEntity<>(applyJobService.findAllByUserId(id),HttpStatus.OK);
+    }
 }
