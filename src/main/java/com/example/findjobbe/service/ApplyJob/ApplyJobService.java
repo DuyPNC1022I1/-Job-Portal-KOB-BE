@@ -54,7 +54,8 @@ public class ApplyJobService implements ICoreService<ApplyJob> {
         User user = userService.findOne(userId);
         Job job = jobService.findOne(jobId);
         ApplyJob applyJobFind = applyJobRepository.findApplyJobByJob_IdAndUser_Id(jobId,userId);
-        if (user!=null && job!=null && applyJobFind==null){
+        if (user!=null && job!=null){
+            if(applyJobFind==null || applyJobFind.getStatus().equals("Canceled")){
             ApplyJob applyJob = new ApplyJob();
             applyJob.setUser(user);
             applyJob.setJob(job);
@@ -68,6 +69,8 @@ public class ApplyJobService implements ICoreService<ApplyJob> {
             notification.setCompany(applyJob.getJob().getCompany());
             notificationService.save(notification);
             return true;
+            }
+            return false;
         }
         return false;
     }
