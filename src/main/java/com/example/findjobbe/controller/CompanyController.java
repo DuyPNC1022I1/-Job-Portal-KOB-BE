@@ -25,5 +25,9 @@ public class CompanyController {
     public ResponseEntity<Company> findOne(@PathVariable Long id) {
         return new ResponseEntity<>(iCompanyService.findOne(id),HttpStatus.OK);
     }
+    @PostMapping("/top-company")
+    public ResponseEntity<List<Company>> topCompany(){
+        return new ResponseEntity<>(iCompanyService.topHighRecruit(),HttpStatus.OK);
+    }
 
 }
