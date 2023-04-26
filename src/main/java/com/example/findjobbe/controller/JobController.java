@@ -3,6 +3,7 @@ package com.example.findjobbe.controller;
 import com.example.findjobbe.model.Job;
 import com.example.findjobbe.model.SearchAll;
 import com.example.findjobbe.model.SearchKey;
+import com.example.findjobbe.service.ApplyJob.ApplyJobService;
 import com.example.findjobbe.service.jobs.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,8 @@ import java.util.List;
 public class JobController {
     @Autowired
     private JobService jobService;
+    @Autowired
+    private ApplyJobService applyJobService;
 
     //    @GetMapping
 //    public ResponseEntity<Page<Job>> findAll(@PageableDefault(page = 5) Pageable pageable) {
@@ -69,14 +72,10 @@ public class JobController {
     //Block Job
     @GetMapping("/blockOrUnlockJob/{id}")
     public ResponseEntity<List<Job>> blockOrUnlockJob(@PathVariable Long id) {
-        Job jobBlock = jobService.findOne(id);
-        if (jobBlock.getStatus()) {
-            jobBlock.setStatus(false); //block job
-        } else {
-            jobBlock.setStatus(true); //unlock job
-        }
-        jobService.save(jobBlock);
-        return new ResponseEntity<>(jobService.findAllByCompany(jobBlock.getCompany().getId()), HttpStatus.OK);
+       if (applyJobService.lockOrUnlockJob(id)){
+           return new ResponseEntity<>(jobService.findAllByCompany(jobService.findOne(id).getCompany().getId()), HttpStatus.OK);
+       }
+       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     //Unlock job
