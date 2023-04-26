@@ -52,7 +52,7 @@ public class CompanyService implements ICoreService<Company>{
         return count;
     }
     public Long findMax(List<Long> list){
-        Long max = list.get(0);
+        Long max = 0L;
         for (Long l:list){
             if (l >= max){
                 max = l;
@@ -66,14 +66,20 @@ public class CompanyService implements ICoreService<Company>{
         List<Company> companyTopList = new ArrayList<>();
         List<Company> companyList= companyRepository.findAll();
         for (Company c:companyList){
-            listCount.add(countQuantity(c));
+            Long count = countQuantity(c);
+            if (count!=0L){
+                listCount.add(count);
+            }
+
         }
-        while (companyTopList.size()<=6 && !listCount.isEmpty()){
+        while (companyTopList.size()<6 && !listCount.isEmpty()){
         for (Company c:companyList){
             Long max = findMax(listCount);
-            if (countQuantity(c)>=max){
+            if (countQuantity(c)>=max && max!=0L){
+                if (!companyTopList.contains(c)){
                 companyTopList.add(c);
                 listCount.remove(countQuantity(c));
+                }
             }
         }
         }
