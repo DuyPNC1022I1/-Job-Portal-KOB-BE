@@ -3,6 +3,7 @@ package com.example.findjobbe.service.jobs;
 import com.example.findjobbe.model.ApplyJob;
 import com.example.findjobbe.model.Job;
 import com.example.findjobbe.model.SearchAll;
+import com.example.findjobbe.repository.ApplyJobRepository;
 import com.example.findjobbe.repository.JobRepository;
 import com.example.findjobbe.service.ApplyJob.ApplyJobService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,6 @@ import java.util.List;
 public class JobService extends ICoreServiceJob {
     @Autowired
     private JobRepository jobRepository;
-    @Autowired
-    private ApplyJobService applyJobService;
 
     public List<Job> findAllTest() {
         return jobRepository.findAll();
@@ -239,16 +238,6 @@ public class JobService extends ICoreServiceJob {
         return jobs;
     }
 
-    public Boolean lockJob(Long id){
-        Job job = findOne(id);
-        if (job!=null){
-            List<ApplyJob> applyJobList = applyJobService.findAllByJobId(id);
 
-
-
-        }
-
-        return false;
-    }
 
 }

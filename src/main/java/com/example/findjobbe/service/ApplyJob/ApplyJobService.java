@@ -169,5 +169,25 @@ public class ApplyJobService implements ICoreService<ApplyJob> {
         return applyJobRepository.findAllByJob_Id(id);
     }
 
+    public Boolean lockOrUnlockJob(Long id){
+        Job job = jobService.findOne(id);
+        if (job!=null) {
+            if (job.getStatus()) {
+                List<ApplyJob> applyJobList = applyJobRepository.findAllByJob_Id(id);
+                for (ApplyJob a : applyJobList) {
+                    if (a.getStatus().equals("Pending")) {
+                        rejectApplyJob(a.getId());
+                    }
+                }
+                job.setStatus(false);
+            } else {
+                job.setStatus(true);
+            }
+            jobService.save(job);
+            return true;
+        }
+        return false;
+    }
+
 
 }
