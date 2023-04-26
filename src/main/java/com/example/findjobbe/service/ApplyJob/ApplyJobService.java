@@ -62,7 +62,7 @@ public class ApplyJobService implements ICoreService<ApplyJob> {
             applyJob.setStatus("Pending");
             applyJobRepository.save(applyJob);
             Notification notification = new Notification();
-            String text = user.getAccount().getName() + " applied for "+ job.getCareer().getName()+"-"+
+            String text = user.getAccount().getName() + " applied for "+ job.getEmployeeType().getName()+"-"+
                            job.getCompany().getAccount().getName();
             notification.setText(text);
             notification.setStatus(true);
@@ -74,7 +74,7 @@ public class ApplyJobService implements ICoreService<ApplyJob> {
                 applyJobFind.setStatus("Pending");
                 applyJobRepository.save(applyJobFind);
                 Notification notification = new Notification();
-                String text = user.getAccount().getName() + " applied for "+ job.getCareer().getName()+"-"+
+                String text = user.getAccount().getName() + " applied for "+ job.getEmployeeType().getName()+"-"+
                         job.getCompany().getAccount().getName();
                 notification.setText(text);
                 notification.setStatus(true);
@@ -93,7 +93,7 @@ public class ApplyJobService implements ICoreService<ApplyJob> {
                 applyJobFind.setStatus("Canceled");
                 applyJobRepository.save(applyJobFind);
                 Notification notification = new Notification();
-                String text = applyJobFind.getUser().getAccount().getName() + " canceled "+ applyJobFind.getJob().getCareer().getName()
+                String text = applyJobFind.getUser().getAccount().getName() + " canceled "+ applyJobFind.getJob().getEmployeeType().getName()
                      + "-" + applyJobFind.getJob().getCompany().getAccount().getName() + " !";
                 notification.setText(text);
                 notification.setCompany(applyJobFind.getJob().getCompany());
@@ -112,7 +112,7 @@ public class ApplyJobService implements ICoreService<ApplyJob> {
             applyJobRepository.save(applyJob);
             Notification notification = new Notification();
             String text = applyJob.getJob().getCompany().getAccount().getName() + " accepted your apply for"
-                    + applyJob.getJob().getCareer().getName()+"-"+applyJob.getJob().getCompany().getAccount().getName();
+                    + applyJob.getJob().getEmployeeType().getName()+"-"+applyJob.getJob().getCompany().getAccount().getName();
             notification.setText(text);
             notification.setUser(applyJob.getUser());
             notification.setStatus(true);
@@ -148,7 +148,7 @@ public class ApplyJobService implements ICoreService<ApplyJob> {
             applyJobRepository.save(applyJob);
             Notification notification = new Notification();
             String text = applyJob.getJob().getCompany().getAccount().getName()+
-                    " rejected your apply for "+applyJob.getJob().getCareer().getName()+
+                    " rejected your apply for "+applyJob.getJob().getEmployeeType().getName()+
                     "-"+applyJob.getJob().getCompany().getAccount().getName();
             notification.setText(text);
             notification.setUser(applyJob.getUser());
