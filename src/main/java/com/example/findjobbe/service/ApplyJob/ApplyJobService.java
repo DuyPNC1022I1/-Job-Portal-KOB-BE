@@ -70,7 +70,7 @@ public class ApplyJobService implements ICoreService<ApplyJob> {
             notificationService.save(notification);
             return true;
             }
-            if (applyJobFind.getStatus().equals("Canceled")){
+            if (applyJobFind.getStatus().equals("Canceled") || applyJobFind.getStatus().equals("Rejected") ){
                 applyJobFind.setStatus("Pending");
                 applyJobRepository.save(applyJobFind);
                 Notification notification = new Notification();
@@ -175,7 +175,7 @@ public class ApplyJobService implements ICoreService<ApplyJob> {
             if (job.getStatus()) {
                 List<ApplyJob> applyJobList = applyJobRepository.findAllByJob_Id(id);
                 for (ApplyJob a : applyJobList) {
-                    if (a.getStatus().equals("Pending")) {
+                    if (a.getStatus().equals("Pending")){
                         rejectApplyJob(a.getId());
                     }
                 }
