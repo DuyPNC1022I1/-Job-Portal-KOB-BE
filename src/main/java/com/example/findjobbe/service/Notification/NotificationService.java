@@ -43,9 +43,9 @@ public class NotificationService implements ICoreService<Notification> {
 
     public List<Notification> findAllById(Long id){
         if (companyService.findOne(id)!=null){
-            return notificationRepository.findAllByCompany_Id(id);
+            return notificationRepository.findAllByCompany_IdOrderByIdDesc(id);
         }
-        return notificationRepository.findAllByUser_Id(id);
+        return notificationRepository.findAllByUser_IdOrderByIdDesc(id);
     }
     public void readNotification(Long id){
         Notification notification = notificationRepository.findById(id).orElse(null);

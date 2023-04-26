@@ -55,7 +55,7 @@ public class ApplyJobService implements ICoreService<ApplyJob> {
         Job job = jobService.findOne(jobId);
         ApplyJob applyJobFind = applyJobRepository.findApplyJobByJob_IdAndUser_Id(jobId,userId);
         if (user!=null && job!=null){
-            if(applyJobFind==null || applyJobFind.getStatus().equals("Canceled")){
+            if(applyJobFind==null){
             ApplyJob applyJob = new ApplyJob();
             applyJob.setUser(user);
             applyJob.setJob(job);
@@ -70,7 +70,18 @@ public class ApplyJobService implements ICoreService<ApplyJob> {
             notificationService.save(notification);
             return true;
             }
-            return false;
+            if (applyJobFind.getStatus().equals("Canceled")){
+                applyJobFind.setStatus("Pending");
+                applyJobRepository.save(applyJobFind);
+                Notification notification = new Notification();
+                String text = user.getAccount().getName() + " applied for "+ job.getCareer().getName()+"-"+
+                        job.getCompany().getAccount().getName();
+                notification.setText(text);
+                notification.setStatus(true);
+                notification.setCompany(applyJobFind.getJob().getCompany());
+                notificationService.save(notification);
+                return true;
+            }
         }
         return false;
     }
@@ -83,7 +94,7 @@ public class ApplyJobService implements ICoreService<ApplyJob> {
                 applyJobRepository.save(applyJobFind);
                 Notification notification = new Notification();
                 String text = applyJobFind.getUser().getAccount().getName() + " canceled "+ applyJobFind.getJob().getCareer().getName()
-                        + applyJobFind.getJob().getCompany().getAccount().getName() + " !";
+                     + "-" + applyJobFind.getJob().getCompany().getAccount().getName() + " !";
                 notification.setText(text);
                 notification.setCompany(applyJobFind.getJob().getCompany());
                 notification.setStatus(true);
