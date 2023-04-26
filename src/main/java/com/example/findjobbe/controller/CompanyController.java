@@ -1,5 +1,6 @@
 package com.example.findjobbe.controller;
 import com.example.findjobbe.model.Company;
+import com.example.findjobbe.model.TopCompany;
 import com.example.findjobbe.service.company.ICompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public class CompanyController {
         return new ResponseEntity<>(iCompanyService.findOne(id),HttpStatus.OK);
     }
     @PostMapping("/top-company")
-    public ResponseEntity<List<Company>> topCompany(){
+    public ResponseEntity<List<TopCompany>> topCompany(){
         return new ResponseEntity<>(iCompanyService.topHighRecruit(),HttpStatus.OK);
     }
 

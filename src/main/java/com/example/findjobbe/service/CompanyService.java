@@ -3,6 +3,7 @@ package com.example.findjobbe.service;
 import com.example.findjobbe.model.Account;
 import com.example.findjobbe.model.Company;
 import com.example.findjobbe.model.Job;
+import com.example.findjobbe.model.TopCompany;
 import com.example.findjobbe.repository.CompanyRepository;
 import com.example.findjobbe.service.jobs.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,9 +62,10 @@ public class CompanyService implements ICoreService<Company>{
         return max;
     }
 
-    public List<Company> topHighRecruit(){
+    public List<TopCompany> topHighRecruit(){
         List<Long> listCount = new ArrayList<>();
         List<Company> companyTopList = new ArrayList<>();
+        List<TopCompany> topCompanies = new ArrayList<>();
         List<Company> companyList= companyRepository.findAll();
         for (Company c:companyList){
             Long count = countQuantity(c);
@@ -73,17 +75,24 @@ public class CompanyService implements ICoreService<Company>{
 
         }
         while (companyTopList.size()<6 && !listCount.isEmpty()){
-        for (Company c:companyList){
-            Long max = findMax(listCount);
-            if (countQuantity(c)>=max && max!=0L){
-                if (!companyTopList.contains(c)){
-                companyTopList.add(c);
-                listCount.remove(countQuantity(c));
+            for (Company c:companyList){
+                Long max = findMax(listCount);
+                if (countQuantity(c)>=max && max!=0L){
+                    if (!companyTopList.contains(c)){
+                        companyTopList.add(c);
+                        listCount.remove(countQuantity(c));
+                    }
                 }
             }
         }
+        for (Company c:companyTopList){
+            TopCompany topCompany = new TopCompany();
+            topCompany.setCompany(c);
+            topCompany.setTotalQuantity(countQuantity(c));
+            topCompany.setTotalJob(jobService.findAllByCompany(c.getId()).size());
+            topCompanies.add(topCompany);
         }
-        return companyTopList;
+        return topCompanies;
     }
 
 }
