@@ -165,6 +165,9 @@ public class ApplyJobService implements ICoreService<ApplyJob> {
     public List<ApplyJob> findAllByUserId(Long id){
         return applyJobRepository.findAllByUserId(id);
     }
+    public List<ApplyJob> findAllByJobId(Long id){
+        return applyJobRepository.findAllByJob_Id(id);
+    }
 
 
 }

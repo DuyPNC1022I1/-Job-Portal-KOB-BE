@@ -3,6 +3,7 @@ package com.example.findjobbe.service;
 import com.example.findjobbe.model.Account;
 import com.example.findjobbe.model.Company;
 import com.example.findjobbe.model.Job;
+import com.example.findjobbe.model.TopCompany;
 import com.example.findjobbe.repository.CompanyRepository;
 import com.example.findjobbe.service.jobs.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,7 @@ public class CompanyService implements ICoreService<Company>{
         return count;
     }
     public Long findMax(List<Long> list){
-        Long max = list.get(0);
+        Long max = 0L;
         for (Long l:list){
             if (l >= max){
                 max = l;
@@ -61,23 +62,37 @@ public class CompanyService implements ICoreService<Company>{
         return max;
     }
 
-    public List<Company> topHighRecruit(){
+    public List<TopCompany> topHighRecruit(){
         List<Long> listCount = new ArrayList<>();
         List<Company> companyTopList = new ArrayList<>();
+        List<TopCompany> topCompanies = new ArrayList<>();
         List<Company> companyList= companyRepository.findAll();
         for (Company c:companyList){
-            listCount.add(countQuantity(c));
+            Long count = countQuantity(c);
+            if (count!=0L){
+                listCount.add(count);
+            }
+
         }
-        while (companyTopList.size()<=6 && !listCount.isEmpty()){
-        for (Company c:companyList){
-            Long max = findMax(listCount);
-            if (countQuantity(c)>=max){
-                companyTopList.add(c);
-                listCount.remove(countQuantity(c));
+        while (companyTopList.size()<6 && !listCount.isEmpty()){
+            for (Company c:companyList){
+                Long max = findMax(listCount);
+                if (countQuantity(c)>=max && max!=0L){
+                    if (!companyTopList.contains(c)){
+                        companyTopList.add(c);
+                        listCount.remove(countQuantity(c));
+                    }
+                }
             }
         }
+        for (Company c:companyTopList){
+            TopCompany topCompany = new TopCompany();
+            topCompany.setCompany(c);
+            topCompany.setTotalQuantity(countQuantity(c));
+            topCompany.setTotalJob(jobService.findAllByCompany(c.getId()).size());
+            topCompanies.add(topCompany);
         }
-        return companyTopList;
+        return topCompanies;
     }
 
 }
