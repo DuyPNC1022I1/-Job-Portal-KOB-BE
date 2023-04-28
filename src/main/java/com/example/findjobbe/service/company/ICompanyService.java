@@ -39,8 +39,8 @@ public class ICompanyService extends CompanyService {
             if (!companyUpdate.getAddress().equals("")){
                 company.setAddress(companyUpdate.getAddress());
             }
-            if (!companyUpdate.getCity().getName().equals("")){
-                company.getCity().setName(companyUpdate.getCity().getName());
+            if (companyUpdate.getCity()!=null){
+                company.setCity(companyUpdate.getCity());
             }
             save(company);
             return true;
