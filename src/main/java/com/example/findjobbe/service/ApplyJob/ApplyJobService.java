@@ -66,7 +66,7 @@ public class ApplyJobService implements ICoreService<ApplyJob> {
                            job.getCompany().getAccount().getName();
             notification.setText(text);
             notification.setStatus(true);
-            notification.setCompany(applyJob.getJob().getCompany());
+            notification.setAccount(applyJob.getJob().getCompany().getAccount());
             notificationService.save(notification);
             return true;
             }
@@ -78,7 +78,7 @@ public class ApplyJobService implements ICoreService<ApplyJob> {
                         job.getCompany().getAccount().getName();
                 notification.setText(text);
                 notification.setStatus(true);
-                notification.setCompany(applyJobFind.getJob().getCompany());
+                notification.setAccount(applyJobFind.getJob().getCompany().getAccount());
                 notificationService.save(notification);
                 return true;
             }
@@ -96,7 +96,7 @@ public class ApplyJobService implements ICoreService<ApplyJob> {
                 String text = applyJobFind.getUser().getAccount().getName() + " canceled "+ applyJobFind.getJob().getEmployeeType().getName()
                      + "-" + applyJobFind.getJob().getCompany().getAccount().getName() + " !";
                 notification.setText(text);
-                notification.setCompany(applyJobFind.getJob().getCompany());
+                notification.setAccount(applyJobFind.getJob().getCompany().getAccount());
                 notification.setStatus(true);
                 notificationService.save(notification);
                 return true;
@@ -114,7 +114,7 @@ public class ApplyJobService implements ICoreService<ApplyJob> {
             String text = applyJob.getJob().getCompany().getAccount().getName() + " accepted your apply for"
                     + applyJob.getJob().getEmployeeType().getName()+"-"+applyJob.getJob().getCompany().getAccount().getName();
             notification.setText(text);
-            notification.setUser(applyJob.getUser());
+            notification.setAccount(applyJob.getUser().getAccount());
             notification.setStatus(true);
             notificationService.save(notification);
             Job job = applyJob.getJob();
@@ -151,7 +151,7 @@ public class ApplyJobService implements ICoreService<ApplyJob> {
                     " rejected your apply for "+applyJob.getJob().getEmployeeType().getName()+
                     "-"+applyJob.getJob().getCompany().getAccount().getName();
             notification.setText(text);
-            notification.setUser(applyJob.getUser());
+            notification.setAccount(applyJob.getUser().getAccount());
             notification.setStatus(true);
             notificationService.save(notification);
             return true;

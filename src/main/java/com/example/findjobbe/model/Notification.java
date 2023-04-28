@@ -17,9 +17,7 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    private Company company;
-    @ManyToOne
-    private User user;
+    private Account account;
     private String text;
     private Boolean status;
 
