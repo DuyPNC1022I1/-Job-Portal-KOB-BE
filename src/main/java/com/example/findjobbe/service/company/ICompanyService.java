@@ -4,6 +4,8 @@ import com.example.findjobbe.model.Company;
 import com.example.findjobbe.repository.CompanyRepository;
 import com.example.findjobbe.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,4 +18,5 @@ public class ICompanyService extends CompanyService {
     public List<Company> findAll() {
         return companyRepository.findAll();
     }
+
 }

@@ -85,6 +85,7 @@ public class CompanyService implements ICoreService<Company>{
                 }
             }
         }
+
         for (Company c:companyTopList){
             TopCompany topCompany = new TopCompany();
             topCompany.setCompany(c);
