@@ -1,7 +1,10 @@
 package com.example.findjobbe.service.Notification;
 
+import com.example.findjobbe.model.Account;
+import com.example.findjobbe.model.Company;
 import com.example.findjobbe.model.Notification;
 import com.example.findjobbe.repository.NotificationRepository;
+import com.example.findjobbe.service.AccountService;
 import com.example.findjobbe.service.CompanyService;
 import com.example.findjobbe.service.ICoreService;
 import com.example.findjobbe.service.UserService;
@@ -20,6 +23,8 @@ public class NotificationService implements ICoreService<Notification> {
     CompanyService companyService;
     @Autowired
     UserService userService;
+    @Autowired
+    AccountService accountService;
 
     @Override
     public Page<Notification> findAll(Pageable pageable) {
@@ -42,10 +47,8 @@ public class NotificationService implements ICoreService<Notification> {
     }
 
     public List<Notification> findAllById(Long id){
-        if (companyService.findOne(id)!=null){
-            return notificationRepository.findAllByCompany_IdOrderByIdDesc(id);
-        }
-        return notificationRepository.findAllByUser_IdOrderByIdDesc(id);
+
+            return notificationRepository.findAllByAccount_Id(id);
     }
     public void readNotification(Long id){
         Notification notification = notificationRepository.findById(id).orElse(null);

@@ -40,8 +40,23 @@ public class UserService implements ICoreService<User>{
     public Boolean updateUser(User userUpdate){
         User user = findOne(userUpdate.getId());
         if(user!=null){
+            if (!userUpdate.getAccount().getName().equals("")){
+                user.getAccount().setName(userUpdate.getAccount().getName());
+            }
+            if (!userUpdate.getBirthDay().equals("")){
+                user.setBirthDay(userUpdate.getBirthDay());
+            }
+            if (!userUpdate.getDescription().equals("")){
+                user.setDescription(userUpdate.getDescription());
+            }
             if (!userUpdate.getAddress().equals("")){
                 user.setAddress(userUpdate.getAddress());
+            }
+            if (!userUpdate.getCvPath().equals("")){
+                user.setCvPath(userUpdate.getCvPath());
+            }
+            if (!userUpdate.getGender().equals("")){
+                user.setGender(userUpdate.getGender());
             }
             if (!userUpdate.getImagePath().equals("")){
                 user.setImagePath(userUpdate.getImagePath());

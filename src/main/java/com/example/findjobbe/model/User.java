@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Getter
@@ -22,6 +21,8 @@ public class User {
     private String imagePath;
     private String phoneNumber;
     private String address;
-    @ManyToOne
-    private CV cv;
+    private String cvPath;
+    private String birthDay;
+    private String gender;
+    private String description;
 }

@@ -34,4 +34,12 @@ public class CompanyController {
         return new ResponseEntity<>(iCompanyService.topHighRecruit(),HttpStatus.OK);
     }
 
+    @PutMapping()
+    public ResponseEntity<Void> save(@RequestBody Company company) {
+        if (iCompanyService.updateCompany(company)){
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
 }
