@@ -64,7 +64,7 @@ public class JobController {
 
     //Get data listJob by Company
     @GetMapping("/findByCompany/{id}")
-    public ResponseEntity<Page<Job>> findAllByCompany(@PathVariable Long id,@PageableDefault Pageable pageable) {
+    public ResponseEntity<Page<Job>> findAllByCompany(@PathVariable Long id,@PageableDefault(size = 5) Pageable pageable) {
         return new ResponseEntity<>(jobService.findAllByCompanyPage(id,pageable), HttpStatus.OK);
     }
 
