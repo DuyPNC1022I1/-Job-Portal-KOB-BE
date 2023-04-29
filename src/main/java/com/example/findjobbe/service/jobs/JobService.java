@@ -55,7 +55,7 @@ public class JobService extends ICoreServiceJob {
         List<Job> jobs = findAllTest();
         List<Job> findList = new ArrayList<>();
         for (Job j : jobs) {
-            if (j.getSalaryMin() <= min || j.getSalaryMax() <= max) {
+            if (j.getSalaryMin() >= min && j.getSalaryMax() <= max) {
                 findList.add(j);
             }
         }
