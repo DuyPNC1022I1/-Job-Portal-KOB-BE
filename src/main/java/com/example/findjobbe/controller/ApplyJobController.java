@@ -4,6 +4,9 @@ import com.example.findjobbe.model.ApplyJob;
 import com.example.findjobbe.service.ApplyJob.ApplyJobService;
 import jdk.internal.dynalink.linker.LinkerServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -51,7 +54,7 @@ public class ApplyJobController {
         return new ResponseEntity<>(applyJobService.findAllByCompanyId(id),HttpStatus.OK);
     }
     @PostMapping("/find-user-apply-job/{id}")
-    public ResponseEntity<List<ApplyJob>> findALlByUserId(@PathVariable Long id){
-        return new ResponseEntity<>(applyJobService.findAllByUserId(id),HttpStatus.OK);
+    public ResponseEntity<Page<ApplyJob>> findALlByUserId(@PathVariable Long id, @PageableDefault(size = 5) Pageable pageable){
+        return new ResponseEntity<>(applyJobService.findAllByUserId(id,pageable),HttpStatus.OK);
     }
 }

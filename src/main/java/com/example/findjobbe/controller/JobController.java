@@ -31,9 +31,8 @@ public class JobController {
 //        return new ResponseEntity<> (jobService.findAll(pageable), HttpStatus.OK);
 //    }
     @GetMapping
-    public ResponseEntity<List<Job>> findAllTest() {
-        List<Job> jobs = jobService.findAllTest();
-        jobService.removeJob(jobs);
+    public ResponseEntity<Page<Job>> findAllTest(@PageableDefault(size = 5) Pageable pageable) {
+        Page<Job> jobs = jobService.findAllTest(pageable);
         return new ResponseEntity<>(jobs, HttpStatus.OK);
     }
 
@@ -65,35 +64,35 @@ public class JobController {
 
     //Get data listJob by Company
     @GetMapping("/findByCompany/{id}")
-    public ResponseEntity<List<Job>> findAllByCompany(@PathVariable Long id) {
-        return new ResponseEntity<>(jobService.findAllByCompany(id), HttpStatus.OK);
+    public ResponseEntity<Page<Job>> findAllByCompany(@PathVariable Long id,@PageableDefault(size = 5) Pageable pageable) {
+        return new ResponseEntity<>(jobService.findAllByCompanyPage(id,pageable), HttpStatus.OK);
     }
 
     //Block Job
     @GetMapping("/blockOrUnlockJob/{id}")
-    public ResponseEntity<List<Job>> blockOrUnlockJob(@PathVariable Long id) {
+    public ResponseEntity<Page<Job>> blockOrUnlockJob(@PathVariable Long id,@PageableDefault Pageable pageable) {
        if (applyJobService.lockOrUnlockJob(id)){
-           return new ResponseEntity<>(jobService.findAllByCompany(jobService.findOne(id).getCompany().getId()), HttpStatus.OK);
+           return new ResponseEntity<>(jobService.findAllByCompanyPage(jobService.findOne(id).getCompany().getId(),pageable), HttpStatus.OK);
        }
        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     //Unlock job
     @GetMapping("/unlockJob/{id}")
-    public ResponseEntity<List<Job>> unlockJob(@PathVariable Long id) {
+    public ResponseEntity<Page<Job>> unlockJob(@PathVariable Long id,@PageableDefault Pageable pageable) {
         Job jobUnlock = jobService.findOne(id);
         jobUnlock.setStatus(true);
         jobService.save(jobUnlock);
-        return new ResponseEntity<>(jobService.findAllTest(), HttpStatus.OK);
+        return new ResponseEntity<>(jobService.findAllTest(pageable), HttpStatus.OK);
     }
 
-    @GetMapping("/find-by-name")
-    public ResponseEntity<Page<Job>> findAllByJobName(@RequestParam("name") String name, @PageableDefault Pageable pageable) {
-        if (!name.equals("")) {
-            return new ResponseEntity<>(jobService.findAllByJobName(name, pageable), HttpStatus.OK);
-        }
-        return new ResponseEntity<>(jobService.findALl(pageable), HttpStatus.OK);
-    }
+//    @GetMapping("/find-by-name")
+//    public ResponseEntity<List<Job>> findAllByJobName(@RequestParam("name") String name) {
+//        if (!name.equals("")) {
+//            return new ResponseEntity<>(jobService.findAllByJobName(name), HttpStatus.OK);
+//        }
+//        return new ResponseEntity<>(jobService.findALl(), HttpStatus.OK);
+//    }
 
     @GetMapping("/find-by-address")
     public ResponseEntity<Page<Job>> findAllByAddress(@RequestParam("address") String address, @PageableDefault Pageable pageable) {

@@ -19,21 +19,24 @@ public class JobService extends ICoreServiceJob {
     @Autowired
     private JobRepository jobRepository;
 
-    public List<Job> findAllTest() {
-        return jobRepository.findAll();
+    public Page<Job> findAllTest(Pageable pageable) {
+        return jobRepository.findAll(pageable);
     }
 
-    public Page<Job> findALl(Pageable pageable) {
-        return jobRepository.findAll(pageable);
+    public List<Job> findALl() {
+        return jobRepository.findAll();
     }
 
     public List<Job> findAllByCompany(Long companyId) {
         return jobRepository.findAllByCompany_Id(companyId);
     }
-
-    public Page<Job> findAllByJobName(String name, Pageable pageable) {
-        return jobRepository.findAllJobByName(name, pageable);
+    public Page<Job> findAllByCompanyPage(Long companyId,Pageable pageable) {
+        return jobRepository.findAllByCompany_Id(companyId,pageable);
     }
+
+//    public Page<Job> findAllByJobName(String name) {
+//        return jobRepository.findAllJobByName(name);
+//    }
 
     public Page<Job> findALlByCompanyAddress(String address, Pageable pageable) {
         return jobRepository.findAllJobByCompanyAddress(address, pageable);
@@ -52,7 +55,7 @@ public class JobService extends ICoreServiceJob {
     }
 
     public List<Job> findBySalary(Double min, Double max) {
-        List<Job> jobs = findAllTest();
+        List<Job> jobs = findALl();
         List<Job> findList = new ArrayList<>();
         for (Job j : jobs) {
             if (j.getSalaryMin() >= min && j.getSalaryMax() <= max) {
@@ -152,7 +155,7 @@ public class JobService extends ICoreServiceJob {
             count++;
         }
         if (count == 5) {
-            searchList = findAllTest();
+            searchList = findALl();
 
         }
         return searchList;
@@ -223,7 +226,7 @@ public class JobService extends ICoreServiceJob {
         if (sort.equals("salaryMax")){
             return jobRepository.findAllByOrderBySalaryMaxDesc();
         }
-        return findAllTest();
+        return findALl();
     }
 
     //Xử lý ẩn job-post có status=false
@@ -237,6 +240,7 @@ public class JobService extends ICoreServiceJob {
         jobs.removeAll(jobsToRemove);
         return jobs;
     }
+
 
 
 
