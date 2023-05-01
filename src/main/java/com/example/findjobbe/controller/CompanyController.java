@@ -1,6 +1,9 @@
 package com.example.findjobbe.controller;
 import com.example.findjobbe.model.Company;
 import com.example.findjobbe.model.TopCompany;
+import com.example.findjobbe.model.User;
+import com.example.findjobbe.service.Notification.NotificationService;
+import com.example.findjobbe.service.UserService;
 import com.example.findjobbe.service.company.ICompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +22,10 @@ public class CompanyController {
 
     @Autowired
     private ICompanyService iCompanyService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    NotificationService notificationService;
 
     @GetMapping
     public ResponseEntity<Page<Company>> findAll(@PageableDefault(size = 5) Pageable pageable) {
@@ -38,6 +45,13 @@ public class CompanyController {
     public ResponseEntity<Void> save(@RequestBody Company company) {
         if (iCompanyService.updateCompany(company)){
             return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    @PostMapping("/view-user/{companyId}/{userId}")
+    public ResponseEntity<User> companyViewUser(@PathVariable Long companyId,@PathVariable Long userId){
+        if (notificationService.companyViewUser(userId,companyId)){
+            return new ResponseEntity<>(userService.findOne(userId),HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
