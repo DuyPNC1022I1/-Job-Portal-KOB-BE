@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification,Long> {
-    public List<Notification> findAllByAccount_Id(Long id);
+    public List<Notification> findAllByAccount_IdOrderByIdDesc(Long id);
 
 }
