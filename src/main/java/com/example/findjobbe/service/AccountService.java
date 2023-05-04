@@ -46,6 +46,7 @@ public class AccountService implements ICoreService<Account> {
     }
     public Boolean register(Account account) {
         String email = account.getEmail();
+        String avatarDefault = "https://png.pngtree.com/png-clipart/20200701/original/pngtree-black-default-avatar-png-image_5407174.jpg";
         String link = "http://localhost:8080/auth/active/" + email;
         String subject = "Active account from KOB find job";
         String text = "Hello, " + account.getName()
@@ -57,11 +58,13 @@ public class AccountService implements ICoreService<Account> {
             if (account.getRoles().equals("user")) {
                 User user = new User();
                 user.setAccount(accountAdd);
+                user.setImagePath(avatarDefault);
                 userService.save(user);
 
             } else {
                 Company company = new Company();
                 company.setAccount(accountAdd);
+                company.setImagePath(avatarDefault);
                 companyService.save(company);
             }
             sendMail(email,subject,text);
