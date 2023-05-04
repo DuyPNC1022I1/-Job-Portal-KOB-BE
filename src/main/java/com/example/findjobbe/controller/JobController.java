@@ -71,10 +71,10 @@ public class JobController {
     //Block Job
     @GetMapping("/blockOrUnlockJob/{id}")
     public ResponseEntity<Page<Job>> blockOrUnlockJob(@PathVariable Long id,@PageableDefault Pageable pageable) {
-       if (applyJobService.lockOrUnlockJob(id)){
-           return new ResponseEntity<>(jobService.findAllByCompanyPage(jobService.findOne(id).getCompany().getId(),pageable), HttpStatus.OK);
-       }
-       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (applyJobService.lockOrUnlockJob(id)){
+            return new ResponseEntity<>(jobService.findAllByCompanyPage(jobService.findOne(id).getCompany().getId(),pageable), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     //Unlock job
