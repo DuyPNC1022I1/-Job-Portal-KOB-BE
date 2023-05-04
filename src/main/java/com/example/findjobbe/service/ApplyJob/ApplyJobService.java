@@ -123,13 +123,14 @@ public class ApplyJobService implements ICoreService<ApplyJob> {
                 if (quantity==1){
                     job.setQuantity(0L);
                     job.setStatus(false);
-                    jobService.save(job);
-                    List<ApplyJob> applyJobs = applyJobRepository.findAllByJob_Id(applyJob.getId());
+
+                    List<ApplyJob> applyJobs = applyJobRepository.findAllByJob_Id(applyJob.getJob().getId());
                     for (ApplyJob a:applyJobs) {
                         if (a.getStatus().equals("Pending")){
                             rejectApplyJob(a.getId());
                         }
                     }
+                    jobService.save(job);
                 }else {
                     job.setQuantity(quantity-1);
                     jobService.save(job);
